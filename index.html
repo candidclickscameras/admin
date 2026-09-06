@@ -9,7 +9,7 @@
     :root {
       --primary: #10b981;
       --primary-dark: #059669;
-      --bg: #0f172a;
+      --bg: #0f172a;sa
       --card: #1e293b;
       --card-2: #172033;
       --input: #0f172a;
@@ -262,6 +262,17 @@
       gap: 10px;
       margin-bottom: 15px;
     }
+
+    .booking-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 5px;
+}
+
+.booking-actions button {
+  flex: 0 0 auto;
+  min-width: 130px;
+}
 
     .booking-item {
       background: var(--input);
@@ -705,16 +716,15 @@
 
       <h2>Bookings & Payment Verification</h2>
 
-      <div class="btn-group">
-        <button class="btn-small" onclick="openNewBookingModal()">
-          + New Booking
-        </button>
+      <div class="btn-group booking-actions">
+  <button class="btn-small" onclick="openNewBookingModal()">
+    + New Booking
+  </button>
 
-        <button class="btn-small btn-blue" onclick="render()">
-          Refresh
-        </button>
-      </div>
-
+  <button class="btn-small btn-blue" onclick="render()">
+    Refresh
+  </button>
+</div>
       <div class="booking-toolbar">
 
         <input
@@ -881,7 +891,7 @@
       <input id="editBufferMins" type="number" min="0" required>
 
       <button class="btn" type="submit">
-        Save Unit Changes
+         Unit Changes
       </button>
 
     </form>
@@ -1193,17 +1203,18 @@
      STORAGE
      ============================================================ */
 
-  function saveData() {
+ function saveData() {
+  localStorage.setItem(
+    'gear_inv',
+    JSON.stringify(inventory)
+  );
 
-    localStorage.setItem(
-      'gear_inv',
-      JSON.stringify(inventory)
-    );
+  localStorage.setItem(
+    'gear_bookings',
+    JSON.stringify(bookings)
+  );
 
-    localStorage.setItem(
-      'gear_bookings',
-      JSON.stringify(bookings)
-    );
+    
 
   }
 
@@ -1883,8 +1894,7 @@ duration.days >= 4
   function renderInventory() {
 
     const box =
-      document
-        .getElementById('inventoryList');
+      document.getElementById('inventoryList');
 
 
     if (!inventory.length) {
