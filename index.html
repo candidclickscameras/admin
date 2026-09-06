@@ -4,167 +4,4358 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard - Rental Hub</title>
+
   <style>
-    :root { --primary: #10b981; --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --danger: #ef4444; }
-    body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 20px; margin: 0; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; max-width: 1400px; margin: auto; }
-    .card { background: var(--card); padding: 20px; border-radius: 12px; }
-    h2, h3 { border-bottom: 2px solid var(--primary); padding-bottom: 8px; margin-top: 0; }
-    label { display: block; margin: 10px 0 4px; font-size: 0.85em; opacity: 0.8; }
-    input, button { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; }
-    button { background: var(--primary); color: #000; font-weight: bold; border: none; cursor: pointer; margin-top: 10px; }
-    .booking-item { background: #0f172a; padding: 12px; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid #f59e0b; }
-    .verified { border-left-color: #10b981; }
-    .cancelled { border-left-color: #ef4444; opacity: 0.5; }
-    .btn-group { display: flex; gap: 6px; margin-top: 8px; }
-    .btn-group button { font-size: 0.75em; padding: 6px; margin-top: 0; }
-    .btn-danger { background: var(--danger); color: white; }
-    .btn-blue { background: #3b82f6; color: white; }
+    :root {
+      --primary: #10b981;
+      --primary-dark: #059669;
+      --bg: #0f172a;
+      --card: #1e293b;
+      --card-2: #172033;
+      --input: #0f172a;
+      --border: #334155;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --danger: #ef4444;
+      --danger-dark: #dc2626;
+      --warning: #f59e0b;
+      --blue: #3b82f6;
+      --purple: #8b5cf6;
+      --shadow: 0 10px 30px rgba(0,0,0,.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    .container {
+      max-width: 1500px;
+      margin: auto;
+    }
+
+    .page-header {
+      margin-bottom: 20px;
+    }
+
+    .page-header h1 {
+      margin: 0 0 5px;
+      font-size: 1.8rem;
+    }
+
+    .page-header p {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* DASHBOARD STATS */
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: .8rem;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+
+    .stat-value {
+      font-size: 1.7rem;
+      font-weight: 800;
+      margin-top: 6px;
+    }
+
+    /* MAIN GRID */
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      min-width: 0;
+    }
+
+    .card.span-2 {
+      grid-column: span 2;
+    }
+
+    h2,
+    h3 {
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 8px;
+      margin-top: 0;
+    }
+
+    h2 {
+      font-size: 1.15rem;
+    }
+
+    h3 {
+      font-size: .95rem;
+      margin-top: 20px;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 4px;
+      font-size: .82rem;
+      color: var(--muted);
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--input);
+      color: white;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--primary);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      background: var(--primary);
+      color: #000;
+      font-weight: 700;
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      background: var(--primary-dark);
+      color: white;
+    }
+
+    .btn-small {
+      padding: 7px 10px;
+      border-radius: 6px;
+      font-size: .78rem;
+      font-weight: 700;
+      background: var(--primary);
+      color: #000;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: var(--danger-dark);
+    }
+
+    .btn-blue {
+      background: var(--blue);
+      color: white;
+    }
+
+    .btn-purple {
+      background: var(--purple);
+      color: white;
+    }
+
+    .btn-warning {
+      background: var(--warning);
+      color: #000;
+    }
+
+    .btn-gray {
+      background: #475569;
+      color: white;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-group button {
+      flex: 1;
+      min-width: 120px;
+    }
+
+    /* INVENTORY */
+
+    .unit-item {
+      background: var(--input);
+      padding: 14px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      border-left: 4px solid var(--primary);
+    }
+
+    .unit-name {
+      font-weight: 800;
+      font-size: .95rem;
+    }
+
+    .unit-meta {
+      color: var(--muted);
+      font-size: .78rem;
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+
+    .unit-availability {
+      margin-top: 8px;
+      font-size: .76rem;
+    }
+
+    /* BOOKINGS */
+
+    .booking-toolbar {
+      display: grid;
+      grid-template-columns: 1fr 180px;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .booking-item {
+      background: var(--input);
+      padding: 14px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      border-left: 4px solid var(--warning);
+    }
+
+    .booking-item.verified {
+      border-left-color: var(--primary);
+    }
+
+    .booking-item.cancelled {
+      border-left-color: var(--danger);
+      opacity: .55;
+    }
+
+    .booking-item.completed {
+      border-left-color: var(--blue);
+    }
+
+    .booking-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .booking-customer {
+      font-weight: 800;
+    }
+
+    .booking-camera {
+      color: var(--primary);
+      font-size: .9rem;
+      margin-top: 2px;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 20px;
+      background: #334155;
+      font-size: .7rem;
+      white-space: nowrap;
+    }
+
+    .status-confirmed {
+      background: rgba(16,185,129,.18);
+      color: #6ee7b7;
+    }
+
+    .status-pending {
+      background: rgba(245,158,11,.18);
+      color: #fcd34d;
+    }
+
+    .status-cancelled {
+      background: rgba(239,68,68,.18);
+      color: #fca5a5;
+    }
+
+    .booking-details {
+      margin-top: 10px;
+      font-size: .8rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .booking-financial {
+      margin-top: 10px;
+      padding: 10px;
+      background: var(--card-2);
+      border-radius: 7px;
+      font-size: .8rem;
+    }
+
+    /* DEPOSIT TASKS */
+
+    .deposit-task {
+      background: var(--input);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-left: 4px solid var(--warning);
+    }
+
+    .deposit-task.ready {
+      border-left-color: var(--primary);
+    }
+
+    .deposit-task.overdue {
+      border-left-color: var(--danger);
+    }
+
+    .deposit-completed {
+      border-left-color: var(--primary);
+      opacity: .65;
+    }
+
+    .task-time {
+      color: var(--muted);
+      font-size: .75rem;
+      margin-top: 4px;
+    }
+
+    /* SALES */
+
+    .sales-tabs {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 5px;
+      margin-bottom: 15px;
+    }
+
+    .sales-tab {
+      padding: 8px 5px;
+      border-radius: 6px;
+      background: #334155;
+      color: white;
+      font-size: .75rem;
+      font-weight: 700;
+    }
+
+    .sales-tab.active {
+      background: var(--primary);
+      color: #000;
+    }
+
+    .sales-total {
+      text-align: center;
+      padding: 20px;
+      background: var(--input);
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    .sales-total .amount {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--primary);
+    }
+
+    .sales-breakdown {
+      font-size: .8rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* AVAILABILITY */
+
+    .availability-box {
+      background: var(--input);
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 10px;
+      font-size: .78rem;
+    }
+
+    .availability-date {
+      display: inline-block;
+      background: #7f1d1d;
+      color: #fecaca;
+      padding: 4px 7px;
+      margin: 3px;
+      border-radius: 5px;
+      font-size: .72rem;
+    }
+
+    .available-label {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .unavailable-label {
+      color: #fca5a5;
+      font-weight: 700;
+    }
+
+    /* MODAL */
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 1000;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal {
+      width: min(700px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      background: var(--card);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.4);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .modal-header h2 {
+      margin-bottom: 0;
+    }
+
+    .close-modal {
+      background: #334155;
+      color: white;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    .notice {
+      background: rgba(59,130,246,.12);
+      border-left: 3px solid var(--blue);
+      padding: 10px;
+      border-radius: 5px;
+      color: #bfdbfe;
+      font-size: .78rem;
+      margin-top: 10px;
+    }
+
+    .warning-notice {
+      background: rgba(245,158,11,.12);
+      border-left-color: var(--warning);
+      color: #fde68a;
+    }
+
+    .success-notice {
+      background: rgba(16,185,129,.12);
+      border-left-color: var(--primary);
+      color: #a7f3d0;
+    }
+
+    .empty {
+      color: var(--muted);
+      font-size: .85rem;
+      padding: 10px 0;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .text-danger {
+      color: #fca5a5;
+    }
+
+    .text-success {
+      color: #6ee7b7;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 1100px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .card.span-2 {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 750px) {
+      body {
+        padding: 10px;
+      }
+
+      .stats-grid,
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card.span-2 {
+        grid-column: span 1;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .full {
+        grid-column: auto;
+      }
+
+      .booking-toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .sales-tabs {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
   </style>
 </head>
+
 <body>
 
-  <div class="grid">
-    <div class="card">
-      <h2>Inventory Setup</h2>
-      <form id="invForm">
-        <label>Camera Model & Serial / Tag</label>
-        <input type="text" id="camName" placeholder="e.g. Sony A7IV (Unit A)" required>
-        <label>Hourly Rate (₱)</label>
-        <input type="number" id="hourlyRate" required>
-        <label>Daily Rate (₱)</label>
-        <input type="number" id="dailyRate" required>
-        <label>Security Deposit (₱)</label>
-        <input type="number" id="depositAmt" required>
-        <label>Turnaround Buffer (Minutes)</label>
-        <input type="number" id="bufferMins" value="60">
-        <button type="button" onclick="addCamera()">Add Unit</button>
-      </form>
-      <h3>Current Units</h3>
-      <ul id="inventoryList" style="padding-left: 15px; font-size: 0.9em;"></ul>
-    </div>
+<div class="container">
 
-    <div class="card" style="grid-column: span 2;">
-      <h2>Bookings & Payment Verification</h2>
-      <div id="bookingList"></div>
-    </div>
-
-    <div class="card">
-      <h2>Sales & Deposit Tracking</h2>
-      <h3>Verified Gross Revenue</h3>
-      <p style="font-size: 1.5em; font-weight: bold; color: var(--primary);">₱<span id="confirmedRevenue">0</span></p>
-      
-      <h3>Deposit Refund Tasks</h3>
-      <ul id="depositTaskList" style="padding-left: 15px; font-size: 0.85em;"></ul>
-    </div>
+  <div class="page-header">
+    <h1>Rental Hub — Admin Dashboard</h1>
+    <p>Manage cameras, bookings, payments, sales, availability and security deposits.</p>
   </div>
 
-  <script>
-    let inventory = JSON.parse(localStorage.getItem('gear_inv')) || [];
-    let bookings = JSON.parse(localStorage.getItem('gear_bookings')) || [];
+  <!-- DASHBOARD STATS -->
 
-    function sync() {
-      localStorage.setItem('gear_inv', JSON.stringify(inventory));
-      localStorage.setItem('gear_bookings', JSON.stringify(bookings));
-      render();
-    }
+  <div class="stats-grid">
 
-    function addCamera() {
-      const name = document.getElementById('camName').value;
-      const hourly = parseFloat(document.getElementById('hourlyRate').value);
-      const daily = parseFloat(document.getElementById('dailyRate').value);
-      const deposit = parseFloat(document.getElementById('depositAmt').value);
-      const buffer = parseInt(document.getElementById('bufferMins').value) || 0;
+    <div class="stat-card">
+      <div class="stat-label">Total Units</div>
+      <div class="stat-value" id="statUnits">0</div>
+    </div>
 
-      if(!name) return alert('Enter camera details.');
-      inventory.push({ id: Date.now(), name, hourly, daily, deposit, buffer });
-      sync();
-    }
+    <div class="stat-card">
+      <div class="stat-label">Active Bookings</div>
+      <div class="stat-value" id="statBookings">0</div>
+    </div>
 
-    function verifyPayment(id) {
-      const b = bookings.find(x => x.id === id);
-      if(b) {
-        b.paymentVerified = true;
-        b.status = 'Confirmed & Paid';
-        sync();
-      }
-    }
+    <div class="stat-card">
+      <div class="stat-label">Confirmed Revenue</div>
+      <div class="stat-value">₱<span id="statRevenue">0.00</span></div>
+    </div>
 
-    function cancelFalsifiedBooking(id) {
-      if(confirm('Are you sure you want to cancel this booking? This will declare the payment falsified/unpaid and free up the time slot.')) {
-        const b = bookings.find(x => x.id === id);
-        if(b) {
-          b.status = 'Cancelled (Falsified/Unpaid)';
-          b.paymentVerified = false;
-          sync();
-        }
-      }
-    }
+    <div class="stat-card">
+      <div class="stat-label">Refund Tasks</div>
+      <div class="stat-value" id="statRefunds">0</div>
+    </div>
 
-    function toggleDeposit(id) {
-      const b = bookings.find(x => x.id === id);
-      if(b) {
-        b.depositReturned = !b.depositReturned;
-        sync();
-      }
-    }
+  </div>
 
-    function syncGCal(id) {
-      const b = bookings.find(x => x.id === id);
-      if(!b) return;
-      const gCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Rental: ' + b.camName + ' - ' + b.customer)}&dates=${new Date(b.start).toISOString().replace(/-|:|\.\d\d\d/g, '')}/${new Date(b.end).toISOString().replace(/-|:|\.\d\d\d/g, '')}&details=${encodeURIComponent('Security Deposit Due for Return: ₱' + b.deposit)}`;
-      window.open(gCalUrl, '_blank');
-    }
+  <div class="grid">
 
-    function render() {
-      // Inventory list
-      document.getElementById('inventoryList').innerHTML = inventory.map(i => 
-        `<li><strong>${i.name}</strong> - ₱${i.hourly}/hr, ₱${i.daily}/day (Buffer: ${i.buffer} mins)</li>`
-      ).join('');
+    <!-- INVENTORY -->
 
-      // Render Bookings
-      const bookingBox = document.getElementById('bookingList');
-      if(bookings.length === 0) {
-        bookingBox.innerHTML = '<p>No bookings requested yet.</p>';
-      } else {
-        bookingBox.innerHTML = bookings.map(b => `
-          <div class="booking-item ${b.paymentVerified ? 'verified' : ''} ${b.status.includes('Cancelled') ? 'cancelled' : ''}">
-            <strong>${b.customer}</strong> — <em>${b.camName}</em>
-            <br><small><strong>Dates:</strong> ${new Date(b.start).toLocaleString()} to ${new Date(b.end).toLocaleString()}</small>
-            <br><small><strong>Rental Fee:</strong> ₱${b.price} | <strong>Deposit:</strong> ₱${b.deposit} | <strong>Status:</strong> ${b.status}</small>
-            
-            ${!b.status.includes('Cancelled') ? `
-              <div class="btn-group">
-                ${!b.paymentVerified ? `<button onclick="verifyPayment(${b.id})">Confirm Payment Received</button>` : ''}
-                <button class="btn-danger" onclick="cancelFalsifiedBooking(${b.id})">Cancel (Falsified Payment)</button>
-                <button class="btn-blue" onclick="syncGCal(${b.id})">Export to GCal</button>
-              </div>
-            ` : ''}
-          </div>
-        `).join('');
-      }
+    <div class="card">
 
-      // Calculate Verified Revenue Only
-      const confirmedTotal = bookings
-        .filter(b => b.paymentVerified && !b.status.includes('Cancelled'))
-        .reduce((sum, b) => sum + b.price, 0);
-      
-      document.getElementById('confirmedRevenue').innerText = confirmedTotal;
+      <h2>Inventory Setup</h2>
 
-      // Render Security Deposit Returns
-      document.getElementById('depositTaskList').innerHTML = bookings
-        .filter(b => b.paymentVerified && !b.status.includes('Cancelled'))
-        .map(b => `
-          <li>
-            <strong>${b.customer}</strong> (${b.camName}) - Refund ₱${b.deposit}
-            <br><button onclick="toggleDeposit(${b.id})" style="padding: 2px 6px; width: auto; font-size:0.8em; background:${b.depositReturned ? '#10b981' : '#f59e0b'}; color:#000;">
-              ${b.depositReturned ? '✓ Refunded' : 'Mark Refunded'}
-            </button>
-          </li>
-        `).join('');
-    }
+      <form id="invForm">
+
+        <label>Camera Model & Serial / Tag</label>
+        <input
+          type="text"
+          id="camName"
+          placeholder="e.g. Sony A7IV (Unit A)"
+          required
+        >
+
+        <label>Daily Rate (₱)</label>
+        <input
+          type="number"
+          id="dailyRate"
+          min="0"
+          step="0.01"
+          placeholder="1000"
+          required
+        >
+
+        <label>Multi-Day Daily Rate (₱)</label>
+        <input
+          type="number"
+          id="multiDayRate"
+          min="0"
+          step="0.01"
+          placeholder="e.g. 850"
+          required
+        >
+
+        <label>Security Deposit (₱)</label>
+        <input
+          type="number"
+          id="depositAmt"
+          min="0"
+          step="0.01"
+          placeholder="1000"
+          required
+        >
+
+        <label>Turnaround Buffer (Minutes)</label>
+        <input
+          type="number"
+          id="bufferMins"
+          min="0"
+          value="60"
+        >
+
+        <div class="notice">
+          The Multi-Day Daily Rate is used when the rental exceeds 24 hours.
+          Example: Daily Rate ₱1,000, Multi-Day Rate ₱850 → a 3-day rental is ₱2,550.
+        </div>
+
+        <button class="btn" type="submit">
+          Add Unit
+        </button>
+
+      </form>
+
+      <h3>Current Units</h3>
+
+      <div id="inventoryList"></div>
+
+    </div>
+
+
+    <!-- BOOKINGS -->
+
+    <div class="card span-2">
+
+      <h2>Bookings & Payment Verification</h2>
+
+      <div class="btn-group">
+        <button class="btn-small" onclick="openNewBookingModal()">
+          + New Booking
+        </button>
+
+        <button class="btn-small btn-blue" onclick="render()">
+          Refresh
+        </button>
+      </div>
+
+      <div class="booking-toolbar">
+
+        <input
+          id="bookingSearch"
+          type="search"
+          placeholder="Search customer, camera, booking..."
+          oninput="renderBookings()"
+        >
+
+        <select id="bookingFilter" onchange="renderBookings()">
+          <option value="all">All Bookings</option>
+          <option value="pending">Pending Payment</option>
+          <option value="confirmed">Confirmed & Paid</option>
+          <option value="active">Active Rentals</option>
+          <option value="completed">Completed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+
+      </div>
+
+      <div id="bookingList"></div>
+
+    </div>
+
+
+    <!-- SALES -->
+
+    <div class="card">
+
+      <h2>Sales Tracking</h2>
+
+      <div class="sales-tabs">
+
+        <button
+          class="sales-tab active"
+          data-period="daily"
+          onclick="changeSalesPeriod('daily')"
+        >
+          Daily
+        </button>
+
+        <button
+          class="sales-tab"
+          data-period="weekly"
+          onclick="changeSalesPeriod('weekly')"
+        >
+          Weekly
+        </button>
+
+        <button
+          class="sales-tab"
+          data-period="monthly"
+          onclick="changeSalesPeriod('monthly')"
+        >
+          Monthly
+        </button>
+
+        <button
+          class="sales-tab"
+          data-period="quarterly"
+          onclick="changeSalesPeriod('quarterly')"
+        >
+          Quarterly
+        </button>
+
+        <button
+          class="sales-tab"
+          data-period="yearly"
+          onclick="changeSalesPeriod('yearly')"
+        >
+          Yearly
+        </button>
+
+      </div>
+
+      <div class="sales-total">
+
+        <div class="muted" id="salesPeriodLabel">
+          Today's Verified Sales
+        </div>
+
+        <div class="amount">
+          ₱<span id="confirmedRevenue">0.00</span>
+        </div>
+
+      </div>
+
+      <div class="sales-breakdown" id="salesBreakdown"></div>
+
+    </div>
+
+
+    <!-- DEPOSIT TASKS -->
+
+    <div class="card">
+
+      <h2>Deposit Refund Tasks</h2>
+
+      <div class="notice warning-notice">
+        Refund tasks become available <strong>1 hour before the booking ends</strong>.
+        The ₱300 reservation fee is treated as part of the ₱1,000 security deposit,
+        leaving ₱700 to be refunded when appropriate.
+      </div>
+
+      <h3>Tasks Ready</h3>
+
+      <div id="depositTaskList"></div>
+
+      <h3>Recently Completed</h3>
+
+      <div id="completedDepositTaskList"></div>
+
+    </div>
+
+
+    <!-- AVAILABILITY -->
+
+    <div class="card">
+
+      <h2>Camera Availability</h2>
+
+      <p class="muted" style="font-size:.8rem;">
+        Cameras automatically become unavailable during overlapping bookings,
+        including their turnaround buffer.
+      </p>
+
+      <div id="availabilityList"></div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- UNIT EDIT MODAL -->
+
+<div class="modal-backdrop" id="unitModal">
+
+  <div class="modal">
+
+    <div class="modal-header">
+      <h2>Edit Camera Unit</h2>
+      <button class="close-modal" onclick="closeModal('unitModal')">×</button>
+    </div>
+
+    <form id="editUnitForm">
+
+      <input type="hidden" id="editUnitId">
+
+      <label>Camera Model & Serial / Tag</label>
+      <input id="editCamName" required>
+
+      <label>Daily Rate (₱)</label>
+      <input id="editDailyRate" type="number" min="0" step="0.01" required>
+
+      <label>Multi-Day Daily Rate (₱)</label>
+      <input id="editMultiDayRate" type="number" min="0" step="0.01" required>
+
+      <label>Security Deposit (₱)</label>
+      <input id="editDepositAmt" type="number" min="0" step="0.01" required>
+
+      <label>Turnaround Buffer (Minutes)</label>
+      <input id="editBufferMins" type="number" min="0" required>
+
+      <button class="btn" type="submit">
+        Save Unit Changes
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- BOOKING MODAL -->
+
+<div class="modal-backdrop" id="bookingModal">
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h2 id="bookingModalTitle">New Booking</h2>
+
+      <button
+        class="close-modal"
+        onclick="closeModal('bookingModal')"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <form id="bookingForm">
+
+      <input type="hidden" id="editBookingId">
+
+      <div class="form-grid">
+
+        <div>
+          <label>Customer Name</label>
+          <input
+            id="bookingCustomer"
+            required
+            placeholder="Customer name"
+          >
+        </div>
+
+        <div>
+          <label>Contact Number</label>
+          <input
+            id="bookingContact"
+            placeholder="09XXXXXXXXX"
+          >
+        </div>
+
+        <div class="full">
+
+          <label>Camera Unit</label>
+
+          <select id="bookingCamera" required onchange="updateBookingPrice()">
+            <option value="">Select camera...</option>
+          </select>
+
+          <div
+            id="cameraAvailabilityMessage"
+            class="notice hidden"
+          ></div>
+
+        </div>
+
+        <div>
+
+          <label>Start Date & Time</label>
+
+          <input
+            id="bookingStart"
+            type="datetime-local"
+            required
+            onchange="onBookingDateChanged()"
+          >
+
+        </div>
+
+        <div>
+
+          <label>End Date & Time</label>
+
+          <input
+            id="bookingEnd"
+            type="datetime-local"
+            required
+            onchange="onBookingDateChanged()"
+          >
+
+        </div>
+
+        <div>
+
+          <label>Reservation Fee (₱)</label>
+
+          <input
+            id="bookingReservation"
+            type="number"
+            min="0"
+            step="0.01"
+            value="300"
+            onchange="updateBookingPrice()"
+          >
+
+        </div>
+
+        <div>
+
+          <label>Security Deposit (₱)</label>
+
+          <input
+            id="bookingDeposit"
+            type="number"
+            min="0"
+            step="0.01"
+            readonly
+          >
+
+        </div>
+
+        <div class="full">
+
+          <label>Notes</label>
+
+          <textarea
+            id="bookingNotes"
+            placeholder="Additional rental notes..."
+          ></textarea>
+
+        </div>
+
+      </div>
+
+      <div
+        id="bookingPricePreview"
+        class="notice success-notice"
+      >
+        Select a camera and rental dates to calculate the price.
+      </div>
+
+      <div
+        id="bookingConflictMessage"
+        class="notice warning-notice hidden"
+      ></div>
+
+      <div class="btn-group">
+
+        <button
+          type="submit"
+          class="btn-small"
+          style="flex:1"
+        >
+          Save Booking
+        </button>
+
+        <button
+          type="button"
+          class="btn-small btn-gray"
+          style="flex:1"
+          onclick="closeModal('bookingModal')"
+        >
+          Cancel
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<script>
+
+  /*
+   * ============================================================
+   * RENTAL HUB ADMIN SYSTEM
+   * ============================================================
+   *
+   * Storage:
+   *   gear_inv
+   *   gear_bookings
+   *
+   * IMPORTANT RENTAL RULE:
+   *
+   * reservationFee = portion of security deposit already paid
+   *
+   * Example:
+   *
+   * Security Deposit = ₱1,000
+   * Reservation Fee = ₱300
+   *
+   * Remaining Deposit = ₱700
+   *
+   * The reservation fee is NOT added on top of the ₱1,000.
+   */
+
+
+  let inventory =
+    JSON.parse(localStorage.getItem('gear_inv')) || [];
+
+  let bookings =
+    JSON.parse(localStorage.getItem('gear_bookings')) || [];
+
+  let currentSalesPeriod = 'daily';
+
+
+  /* ============================================================
+     DATA MIGRATION
+     ============================================================ */
+
+  function migrateData() {
+
+    inventory = inventory.map(i => {
+
+      return {
+        id: i.id || Date.now() + Math.random(),
+        name: i.name || 'Unnamed Camera',
+        daily: Number(i.daily || 0),
+
+        /*
+         * Existing cameras did not have a multi-day rate.
+         * Use the old daily rate as the default.
+         */
+        multiDayRate:
+          Number(
+            i.multiDayRate ??
+            i.daily ??
+            0
+          ),
+
+        deposit: Number(i.deposit || 0),
+        buffer: Number(i.buffer || 60)
+      };
+
+    });
+
+
+    bookings = bookings.map(b => {
+
+      const reservationFee =
+        Number(
+          b.reservationFee ??
+          b.reservation ??
+          300
+        );
+
+      const deposit =
+        Number(
+          b.deposit ??
+          0
+        );
+
+      return {
+        ...b,
+
+        id: b.id || Date.now() + Math.random(),
+
+        customer: b.customer || 'Unknown Customer',
+
+        contact: b.contact || '',
+
+        camName: b.camName || '',
+
+        start: b.start,
+
+        end: b.end,
+
+        price: Number(b.price || 0),
+
+        deposit: deposit,
+
+        reservationFee: reservationFee,
+
+        paymentVerified:
+          Boolean(b.paymentVerified),
+
+        paymentVerifiedAt:
+          b.paymentVerifiedAt || null,
+
+        depositReturned:
+          Boolean(b.depositReturned),
+
+        depositRefundCompletedAt:
+          b.depositRefundCompletedAt || null,
+
+        status:
+          b.status ||
+          (
+            b.paymentVerified
+              ? 'Confirmed & Paid'
+              : 'Pending Payment'
+          ),
+
+        notes: b.notes || ''
+
+      };
+
+    });
+
+
+    saveData();
+  }
+
+
+  /* ============================================================
+     STORAGE
+     ============================================================ */
+
+  function saveData() {
+
+    localStorage.setItem(
+      'gear_inv',
+      JSON.stringify(inventory)
+    );
+
+    localStorage.setItem(
+      'gear_bookings',
+      JSON.stringify(bookings)
+    );
+
+  }
+
+
+  function sync() {
+
+    saveData();
 
     render();
-  </script>
+
+  }
+
+
+  /* ============================================================
+     HELPERS
+     ============================================================ */
+
+  function money(value) {
+
+    return Number(value || 0).toLocaleString(
+      'en-PH',
+      {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }
+    );
+
+  }
+
+
+  function escapeHTML(value) {
+
+    return String(value ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+
+  }
+
+
+  function formatDate(date) {
+
+    if (!date) return 'N/A';
+
+    return new Date(date).toLocaleString(
+      'en-PH',
+      {
+        dateStyle: 'medium',
+        timeStyle: 'short'
+      }
+    );
+
+  }
+
+
+  function toInputDateTime(date) {
+
+    const d = new Date(date);
+
+    const pad = n =>
+      String(n).padStart(2, '0');
+
+    return (
+      d.getFullYear() +
+      '-' +
+      pad(d.getMonth() + 1) +
+      '-' +
+      pad(d.getDate()) +
+      'T' +
+      pad(d.getHours()) +
+      ':' +
+      pad(d.getMinutes())
+    );
+
+  }
+
+
+  function getDuration(start, end) {
+
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+
+    const milliseconds =
+      endDate.getTime() -
+      startDate.getTime();
+
+    if (milliseconds <= 0) {
+      return null;
+    }
+
+    const hours =
+      milliseconds / 3600000;
+
+    /*
+     * Every started rental day counts as one day.
+     *
+     * 24 hours = 1 day
+     * 25 hours = 2 days
+     * 48 hours = 2 days
+     * 49 hours = 3 days
+     */
+
+    const days =
+      Math.ceil(hours / 24);
+
+    return {
+      hours,
+      days
+    };
+
+  }
+
+
+  function getUnitById(id) {
+
+    return inventory.find(
+      i => String(i.id) === String(id)
+    );
+
+  }
+
+
+  function getUnitByName(name) {
+
+    return inventory.find(
+      i => i.name === name
+    );
+
+  }
+
+
+  /* ============================================================
+     BOOKING OVERLAP
+     ============================================================ */
+
+  function bookingsOverlap(
+    startA,
+    endA,
+    startB,
+    endB
+  ) {
+
+    const aStart =
+      new Date(startA).getTime();
+
+    const aEnd =
+      new Date(endA).getTime();
+
+    const bStart =
+      new Date(startB).getTime();
+
+    const bEnd =
+      new Date(endB).getTime();
+
+    return (
+      aStart < bEnd &&
+      aEnd > bStart
+    );
+
+  }
+
+
+  function isBookingCancelled(booking) {
+
+    return String(
+      booking.status || ''
+    ).toLowerCase().includes('cancelled');
+
+  }
+
+
+  function isBookingBlocking(booking) {
+
+    return !isBookingCancelled(booking);
+
+  }
+
+
+  /*
+   * Buffer is applied around a booking.
+   *
+   * Example:
+   * Camera rented until 5:00 PM
+   * Buffer = 60 minutes
+   *
+   * Next booking cannot start before 6:00 PM.
+   */
+
+  function getBlockedRange(
+    booking,
+    unit
+  ) {
+
+    const buffer =
+      Number(unit?.buffer || 0) * 60000;
+
+    return {
+      start:
+        new Date(
+          new Date(booking.start).getTime() -
+          buffer
+        ),
+
+      end:
+        new Date(
+          new Date(booking.end).getTime() +
+          buffer
+        )
+    };
+
+  }
+
+
+  function hasConflict(
+    cameraName,
+    start,
+    end,
+    excludeBookingId = null
+  ) {
+
+    const unit =
+      getUnitByName(cameraName);
+
+    if (!unit) {
+      return true;
+    }
+
+    return bookings.some(b => {
+
+      if (
+        !isBookingBlocking(b)
+      ) {
+        return false;
+      }
+
+      if (
+        excludeBookingId !== null &&
+        String(b.id) === String(excludeBookingId)
+      ) {
+        return false;
+      }
+
+      if (
+        b.camName !== cameraName
+      ) {
+        return false;
+      }
+
+      const blocked =
+        getBlockedRange(
+          b,
+          unit
+        );
+
+      return bookingsOverlap(
+        start,
+        end,
+        blocked.start,
+        blocked.end
+      );
+
+    });
+
+  }
+
+
+  /* ============================================================
+     AVAILABLE CAMERAS
+     ============================================================ */
+
+  function getAvailableCameras(
+    start,
+    end,
+    excludeBookingId = null
+  ) {
+
+    if (!start || !end) {
+      return [];
+    }
+
+    return inventory.filter(unit => {
+
+      return !hasConflict(
+        unit.name,
+        start,
+        end,
+        excludeBookingId
+      );
+
+    });
+
+  }
+
+
+  function getBookingForCamera(
+    cameraName
+  ) {
+
+    return bookings.filter(
+      b =>
+        b.camName === cameraName &&
+        isBookingBlocking(b)
+    );
+
+  }
+
+
+  /* ============================================================
+     PRICING
+     ============================================================ */
+
+  function calculateRentalPrice(
+    unit,
+    start,
+    end
+  ) {
+
+    if (!unit || !start || !end) {
+      return {
+        price: 0,
+        days: 0,
+        hours: 0,
+        rate: 0
+      };
+    }
+
+    const duration =
+      getDuration(
+        start,
+        end
+      );
+
+    if (!duration) {
+      return {
+        price: 0,
+        days: 0,
+        hours: 0,
+        rate: 0
+      };
+    }
+
+    const rate =
+      duration.days > 1
+        ? Number(
+            unit.multiDayRate ||
+            unit.daily ||
+            0
+          )
+        : Number(
+            unit.daily || 0
+          );
+
+    const price =
+      rate * duration.days;
+
+    return {
+      price,
+      days: duration.days,
+      hours: duration.hours,
+      rate
+    };
+
+  }
+
+
+  /* ============================================================
+     INVENTORY
+     ============================================================ */
+
+  document
+    .getElementById('invForm')
+    .addEventListener(
+      'submit',
+      function(e) {
+
+        e.preventDefault();
+
+        const name =
+          document
+            .getElementById('camName')
+            .value
+            .trim();
+
+        const daily =
+          Number(
+            document
+              .getElementById('dailyRate')
+              .value
+          );
+
+        const multiDayRate =
+          Number(
+            document
+              .getElementById('multiDayRate')
+              .value
+          );
+
+        const deposit =
+          Number(
+            document
+              .getElementById('depositAmt')
+              .value
+          );
+
+        const buffer =
+          Number(
+            document
+              .getElementById('bufferMins')
+              .value
+          ) || 0;
+
+
+        if (!name) {
+          alert(
+            'Please enter the camera model / unit name.'
+          );
+          return;
+        }
+
+
+        if (
+          inventory.some(
+            i =>
+              i.name.toLowerCase() ===
+              name.toLowerCase()
+          )
+        ) {
+
+          alert(
+            'A camera unit with this name already exists.'
+          );
+
+          return;
+
+        }
+
+
+        if (
+          daily < 0 ||
+          multiDayRate < 0 ||
+          deposit < 0
+        ) {
+
+          alert(
+            'Rates and deposit cannot be negative.'
+          );
+
+          return;
+
+        }
+
+
+        inventory.push({
+
+          id:
+            Date.now(),
+
+          name,
+
+          daily,
+
+          multiDayRate,
+
+          deposit,
+
+          buffer
+
+        });
+
+
+        this.reset();
+
+        document
+          .getElementById('bufferMins')
+          .value = 60;
+
+        sync();
+
+      }
+    );
+
+
+  function editUnit(id) {
+
+    const unit =
+      getUnitById(id);
+
+    if (!unit) return;
+
+    document
+      .getElementById('editUnitId')
+      .value = unit.id;
+
+    document
+      .getElementById('editCamName')
+      .value = unit.name;
+
+    document
+      .getElementById('editDailyRate')
+      .value = unit.daily;
+
+    document
+      .getElementById('editMultiDayRate')
+      .value =
+        unit.multiDayRate ||
+        unit.daily;
+
+    document
+      .getElementById('editDepositAmt')
+      .value = unit.deposit;
+
+    document
+      .getElementById('editBufferMins')
+      .value =
+        unit.buffer || 60;
+
+    openModal('unitModal');
+
+  }
+
+
+  document
+    .getElementById('editUnitForm')
+    .addEventListener(
+      'submit',
+      function(e) {
+
+        e.preventDefault();
+
+        const id =
+          document
+            .getElementById('editUnitId')
+            .value;
+
+        const unit =
+          getUnitById(id);
+
+        if (!unit) return;
+
+
+        const name =
+          document
+            .getElementById('editCamName')
+            .value
+            .trim();
+
+        const daily =
+          Number(
+            document
+              .getElementById('editDailyRate')
+              .value
+          );
+
+        const multiDayRate =
+          Number(
+            document
+              .getElementById('editMultiDayRate')
+              .value
+          );
+
+        const deposit =
+          Number(
+            document
+              .getElementById('editDepositAmt')
+              .value
+          );
+
+        const buffer =
+          Number(
+            document
+              .getElementById('editBufferMins')
+              .value
+          );
+
+
+        if (!name) {
+          alert(
+            'Camera name cannot be empty.'
+          );
+          return;
+        }
+
+
+        const duplicate =
+          inventory.some(
+            i =>
+              String(i.id) !== String(id) &&
+              i.name.toLowerCase() ===
+              name.toLowerCase()
+          );
+
+        if (duplicate) {
+          alert(
+            'Another camera already uses this name.'
+          );
+          return;
+        }
+
+
+        unit.name = name;
+        unit.daily = daily;
+        unit.multiDayRate = multiDayRate;
+        unit.deposit = deposit;
+        unit.buffer = buffer;
+
+
+        /*
+         * Existing bookings keep their original
+         * price/deposit values.
+         *
+         * New bookings use the updated rates.
+         */
+
+
+        closeModal('unitModal');
+
+        sync();
+
+      }
+    );
+
+
+  function deleteUnit(id) {
+
+    const unit =
+      getUnitById(id);
+
+    if (!unit) return;
+
+
+    const hasBookings =
+      bookings.some(
+        b =>
+          b.camName === unit.name &&
+          !isBookingCancelled(b)
+      );
+
+
+    if (hasBookings) {
+
+      alert(
+        'This unit cannot be deleted because it has active or confirmed bookings. Edit/cancel those bookings first.'
+      );
+
+      return;
+
+    }
+
+
+    if (
+      !confirm(
+        `Delete "${unit.name}" from inventory?`
+      )
+    ) {
+      return;
+    }
+
+
+    inventory =
+      inventory.filter(
+        i =>
+          String(i.id) !== String(id)
+      );
+
+
+    sync();
+
+  }
+
+
+  /* ============================================================
+     INVENTORY RENDER
+     ============================================================ */
+
+  function renderInventory() {
+
+    const box =
+      document
+        .getElementById('inventoryList');
+
+
+    if (!inventory.length) {
+
+      box.innerHTML =
+        '<div class="empty">No camera units added yet.</div>';
+
+      return;
+
+    }
+
+
+    box.innerHTML =
+      inventory.map(unit => {
+
+        const unitBookings =
+          getBookingForCamera(
+            unit.name
+          );
+
+        const upcoming =
+          unitBookings
+            .filter(
+              b =>
+                new Date(b.end) >
+                new Date()
+            )
+            .sort(
+              (a,b) =>
+                new Date(a.start) -
+                new Date(b.start)
+            )
+            .slice(0, 3);
+
+
+        return `
+
+          <div class="unit-item">
+
+            <div class="unit-name">
+              ${escapeHTML(unit.name)}
+            </div>
+
+            <div class="unit-meta">
+
+              Daily:
+              <strong>
+                ₱${money(unit.daily)}
+              </strong>
+
+              <br>
+
+              Multi-Day Daily:
+              <strong>
+                ₱${money(unit.multiDayRate)}
+              </strong>
+
+              <br>
+
+              Security Deposit:
+              <strong>
+                ₱${money(unit.deposit)}
+              </strong>
+
+              <br>
+
+              Buffer:
+              ${unit.buffer} minutes
+
+            </div>
+
+
+            <div class="unit-availability">
+
+              ${
+                upcoming.length
+                ? `
+                  <span class="unavailable-label">
+                    Upcoming rental:
+                  </span>
+
+                  ${upcoming.map(
+                    b =>
+                      `<br>
+                      ${formatDate(b.start)}
+                      →
+                      ${formatDate(b.end)}`
+                  ).join('')}
+
+                `
+                : `
+                  <span class="available-label">
+                    ✓ Currently available
+                  </span>
+                `
+              }
+
+            </div>
+
+
+            <div class="btn-group">
+
+              <button
+                class="btn-small btn-blue"
+                onclick="editUnit(${JSON.stringify(unit.id)})"
+              >
+                Edit
+              </button>
+
+              <button
+                class="btn-small btn-danger"
+                onclick="deleteUnit(${JSON.stringify(unit.id)})"
+              >
+                Delete
+              </button>
+
+            </div>
+
+          </div>
+
+        `;
+
+      }).join('');
+
+  }
+
+
+  /* ============================================================
+     BOOKING MODAL
+     ============================================================ */
+
+  function openModal(id) {
+
+    document
+      .getElementById(id)
+      .classList.add('open');
+
+  }
+
+
+  function closeModal(id) {
+
+    document
+      .getElementById(id)
+      .classList.remove('open');
+
+  }
+
+
+  function openNewBookingModal() {
+
+    document
+      .getElementById('bookingModalTitle')
+      .innerText =
+        'New Booking';
+
+    document
+      .getElementById('bookingForm')
+      .reset();
+
+    document
+      .getElementById('editBookingId')
+      .value = '';
+
+    document
+      .getElementById('bookingReservation')
+      .value = 300;
+
+
+    const now =
+      new Date();
+
+    const later =
+      new Date(
+        now.getTime() +
+        24 * 60 * 60 * 1000
+      );
+
+
+    document
+      .getElementById('bookingStart')
+      .value =
+        toInputDateTime(now);
+
+    document
+      .getElementById('bookingEnd')
+      .value =
+        toInputDateTime(later);
+
+
+    populateCameraDropdown();
+
+    updateBookingPrice();
+
+    openModal('bookingModal');
+
+  }
+
+
+  function editBooking(id) {
+
+    const booking =
+      bookings.find(
+        b =>
+          String(b.id) === String(id)
+      );
+
+    if (!booking) return;
+
+
+    document
+      .getElementById('bookingModalTitle')
+      .innerText =
+        'Edit Booking';
+
+
+    document
+      .getElementById('editBookingId')
+      .value =
+        booking.id;
+
+
+    document
+      .getElementById('bookingCustomer')
+      .value =
+        booking.customer || '';
+
+
+    document
+      .getElementById('bookingContact')
+      .value =
+        booking.contact || '';
+
+
+    document
+      .getElementById('bookingStart')
+      .value =
+        toInputDateTime(
+          booking.start
+        );
+
+
+    document
+      .getElementById('bookingEnd')
+      .value =
+        toInputDateTime(
+          booking.end
+        );
+
+
+    document
+      .getElementById('bookingReservation')
+      .value =
+        Number(
+          booking.reservationFee || 0
+        );
+
+
+    document
+      .getElementById('bookingDeposit')
+      .value =
+        Number(
+          booking.deposit || 0
+        );
+
+
+    document
+      .getElementById('bookingNotes')
+      .value =
+        booking.notes || '';
+
+
+    populateCameraDropdown(
+      booking.camName,
+      booking.id
+    );
+
+
+    updateBookingPrice();
+
+    openModal('bookingModal');
+
+  }
+
+
+  /* ============================================================
+     CAMERA DROPDOWN
+     ============================================================ */
+
+  function populateCameraDropdown(
+    currentCamera = '',
+    excludeBookingId = null
+  ) {
+
+    const select =
+      document
+        .getElementById('bookingCamera');
+
+
+    const start =
+      document
+        .getElementById('bookingStart')
+        .value;
+
+    const end =
+      document
+        .getElementById('bookingEnd')
+        .value;
+
+
+    select.innerHTML =
+      '<option value="">Select camera...</option>';
+
+
+    let available =
+      getAvailableCameras(
+        start,
+        end,
+        excludeBookingId
+      );
+
+
+    /*
+     * When editing, retain the existing camera
+     * even if it is currently occupied by the
+     * booking being edited.
+     *
+     * It will NOT include cameras occupied by
+     * other bookings.
+     */
+
+    if (currentCamera) {
+
+      const currentUnit =
+        getUnitByName(
+          currentCamera
+        );
+
+      if (
+        currentUnit &&
+        !available.some(
+          x =>
+            x.name === currentCamera
+        )
+      ) {
+
+        available.unshift(
+          currentUnit
+        );
+
+      }
+
+    }
+
+
+    available.forEach(unit => {
+
+      const option =
+        document.createElement('option');
+
+      option.value =
+        unit.name;
+
+      option.textContent =
+        `${unit.name} — ₱${money(unit.daily)}/day`;
+
+      if (
+        unit.name === currentCamera
+      ) {
+        option.selected = true;
+      }
+
+      select.appendChild(option);
+
+    });
+
+
+    if (
+      start &&
+      end &&
+      !available.length
+    ) {
+
+      select.innerHTML =
+        '<option value="">No cameras available for selected dates</option>';
+
+    }
+
+
+    showCameraAvailability(
+      start,
+      end,
+      excludeBookingId
+    );
+
+  }
+
+
+  function showCameraAvailability(
+    start,
+    end,
+    excludeBookingId = null
+  ) {
+
+    const message =
+      document
+        .getElementById(
+          'cameraAvailabilityMessage'
+        );
+
+
+    if (!start || !end) {
+
+      message.classList.add('hidden');
+
+      return;
+
+    }
+
+
+    const available =
+      getAvailableCameras(
+        start,
+        end,
+        excludeBookingId
+      );
+
+
+    if (available.length) {
+
+      message.classList.remove('hidden');
+
+      message.className =
+        'notice success-notice';
+
+      message.innerHTML =
+        `<strong>Available cameras:</strong>
+         ${available
+           .map(
+             u =>
+               escapeHTML(u.name)
+           )
+           .join(', ')}`;
+
+    } else {
+
+      message.classList.remove('hidden');
+
+      message.className =
+        'notice warning-notice';
+
+      message.innerHTML =
+        '<strong>No camera is available for the selected period.</strong>';
+
+    }
+
+  }
+
+
+  /* ============================================================
+     BOOKING DATE CHANGE
+     ============================================================ */
+
+  function onBookingDateChanged() {
+
+    const id =
+      document
+        .getElementById('editBookingId')
+        .value ||
+      null;
+
+    const currentCamera =
+      document
+        .getElementById('bookingCamera')
+        .value;
+
+
+    populateCameraDropdown(
+      currentCamera,
+      id
+    );
+
+    updateBookingPrice();
+
+  }
+
+
+  function updateBookingPrice() {
+
+    const cameraName =
+      document
+        .getElementById('bookingCamera')
+        .value;
+
+    const start =
+      document
+        .getElementById('bookingStart')
+        .value;
+
+    const end =
+      document
+        .getElementById('bookingEnd')
+        .value;
+
+    const reservation =
+      Number(
+        document
+          .getElementById('bookingReservation')
+          .value
+      ) || 0;
+
+
+    const unit =
+      getUnitByName(
+        cameraName
+      );
+
+
+    const preview =
+      document
+        .getElementById(
+          'bookingPricePreview'
+        );
+
+
+    const conflict =
+      document
+        .getElementById(
+          'bookingConflictMessage'
+        );
+
+
+    conflict.classList.add(
+      'hidden'
+    );
+
+
+    if (!unit || !start || !end) {
+
+      preview.innerHTML =
+        'Select a camera and rental dates to calculate the price.';
+
+      return;
+
+    }
+
+
+    const duration =
+      getDuration(
+        start,
+        end
+      );
+
+
+    if (!duration) {
+
+      preview.className =
+        'notice warning-notice';
+
+      preview.innerHTML =
+        '<strong>Invalid dates:</strong> End date/time must be after the start date/time.';
+
+      return;
+
+    }
+
+
+    const calculation =
+      calculateRentalPrice(
+        unit,
+        start,
+        end
+      );
+
+
+    const deposit =
+      Number(unit.deposit || 0);
+
+    const remainingDeposit =
+      Math.max(
+        0,
+        deposit - reservation
+      );
+
+
+    document
+      .getElementById(
+        'bookingDeposit'
+      )
+      .value =
+        deposit;
+
+
+    preview.className =
+      'notice success-notice';
+
+
+    preview.innerHTML = `
+
+      <strong>Rental Calculation</strong><br>
+
+      Duration:
+      ${duration.days}
+      day${duration.days !== 1 ? 's' : ''}
+      (${duration.hours.toFixed(1)} hours)
+
+      <br>
+
+      Rate Used:
+      ₱${money(calculation.rate)}
+      / day
+
+      ${
+        duration.days > 1
+          ? ' <strong>(Multi-Day Rate)</strong>'
+          : ''
+      }
+
+      <br>
+
+      Rental Fee:
+      <strong>₱${money(calculation.price)}</strong>
+
+      <br>
+
+      Security Deposit:
+      <strong>₱${money(deposit)}</strong>
+
+      <br>
+
+      Reservation Already Paid:
+      <strong>₱${money(reservation)}</strong>
+
+      <br>
+
+      Remaining Deposit:
+      <strong>₱${money(remainingDeposit)}</strong>
+
+    `;
+
+
+    const bookingId =
+      document
+        .getElementById(
+          'editBookingId'
+        )
+        .value ||
+      null;
+
+
+    if (
+      hasConflict(
+        cameraName,
+        start,
+        end,
+        bookingId
+      )
+    ) {
+
+      conflict.classList.remove(
+        'hidden'
+      );
+
+      conflict.innerHTML = `
+
+        <strong>⚠ Camera unavailable.</strong><br>
+
+        ${escapeHTML(cameraName)}
+        is already rented during, or too close to,
+        the selected period.
+
+        <br><br>
+
+        Choose another camera or change the
+        booking dates.
+
+      `;
+
+    }
+
+  }
+
+
+  /* ============================================================
+     SAVE BOOKING
+     ============================================================ */
+
+  document
+    .getElementById('bookingForm')
+    .addEventListener(
+      'submit',
+      function(e) {
+
+        e.preventDefault();
+
+
+        const bookingId =
+          document
+            .getElementById(
+              'editBookingId'
+            )
+            .value ||
+          null;
+
+
+        const customer =
+          document
+            .getElementById(
+              'bookingCustomer'
+            )
+            .value
+            .trim();
+
+
+        const contact =
+          document
+            .getElementById(
+              'bookingContact'
+            )
+            .value
+            .trim();
+
+
+        const camera =
+          document
+            .getElementById(
+              'bookingCamera'
+            )
+            .value;
+
+
+        const start =
+          document
+            .getElementById(
+              'bookingStart'
+            )
+            .value;
+
+
+        const end =
+          document
+            .getElementById(
+              'bookingEnd'
+            )
+            .value;
+
+
+        const reservation =
+          Number(
+            document
+              .getElementById(
+                'bookingReservation'
+              )
+              .value
+          ) || 0;
+
+
+        const notes =
+          document
+            .getElementById(
+              'bookingNotes'
+            )
+            .value
+            .trim();
+
+
+        const unit =
+          getUnitByName(
+            camera
+          );
+
+
+        if (
+          !customer ||
+          !camera ||
+          !start ||
+          !end ||
+          !unit
+        ) {
+
+          alert(
+            'Please complete all required booking information.'
+          );
+
+          return;
+
+        }
+
+
+        const duration =
+          getDuration(
+            start,
+            end
+          );
+
+
+        if (!duration) {
+
+          alert(
+            'The end date/time must be after the start date/time.'
+          );
+
+          return;
+
+        }
+
+
+        if (
+          hasConflict(
+            camera,
+            start,
+            end,
+            bookingId
+          )
+        ) {
+
+          alert(
+            'This camera is already rented during the selected period or its turnaround buffer. Please choose another camera or another date.'
+          );
+
+          return;
+
+        }
+
+
+        if (
+          reservation >
+          unit.deposit
+        ) {
+
+          alert(
+            `The reservation fee cannot exceed the security deposit of ₱${money(unit.deposit)}.`
+          );
+
+          return;
+
+        }
+
+
+        const calculation =
+          calculateRentalPrice(
+            unit,
+            start,
+            end
+          );
+
+
+        if (bookingId) {
+
+          const booking =
+            bookings.find(
+              b =>
+                String(b.id) ===
+                String(bookingId)
+            );
+
+
+          if (!booking) {
+            alert(
+              'Booking could not be found.'
+            );
+            return;
+          }
+
+
+          booking.customer =
+            customer;
+
+          booking.contact =
+            contact;
+
+          booking.camName =
+            camera;
+
+          booking.start =
+            start;
+
+          booking.end =
+            end;
+
+          booking.price =
+            calculation.price;
+
+          booking.deposit =
+            unit.deposit;
+
+          booking.reservationFee =
+            reservation;
+
+          booking.notes =
+            notes;
+
+
+          /*
+           * Editing a confirmed booking does not
+           * automatically undo its payment verification.
+           */
+
+        } else {
+
+          bookings.push({
+
+            id:
+              Date.now(),
+
+            customer,
+
+            contact,
+
+            camName:
+              camera,
+
+            start,
+
+            end,
+
+            price:
+              calculation.price,
+
+            deposit:
+              unit.deposit,
+
+            reservationFee:
+              reservation,
+
+            paymentVerified:
+              false,
+
+            paymentVerifiedAt:
+              null,
+
+            depositReturned:
+              false,
+
+            depositRefundCompletedAt:
+              null,
+
+            status:
+              'Pending Payment',
+
+            notes
+
+          });
+
+        }
+
+
+        closeModal(
+          'bookingModal'
+        );
+
+        sync();
+
+      }
+    );
+
+
+  /* ============================================================
+     PAYMENT VERIFICATION
+     ============================================================ */
+
+  function verifyPayment(id) {
+
+    const booking =
+      bookings.find(
+        b =>
+          String(b.id) ===
+          String(id)
+      );
+
+    if (!booking) return;
+
+
+    if (
+      !confirm(
+        `Confirm that payment has been received for ${booking.customer}?`
+      )
+    ) {
+      return;
+    }
+
+
+    booking.paymentVerified =
+      true;
+
+    booking.paymentVerifiedAt =
+      new Date().toISOString();
+
+    booking.status =
+      'Confirmed & Paid';
+
+
+    sync();
+
+  }
+
+
+  /* ============================================================
+     CANCEL BOOKING
+     ============================================================ */
+
+  function cancelBooking(id) {
+
+    const booking =
+      bookings.find(
+        b =>
+          String(b.id) ===
+          String(id)
+      );
+
+    if (!booking) return;
+
+
+    if (
+      !confirm(
+        'Cancel this booking? The time slot will immediately become available again.'
+      )
+    ) {
+      return;
+    }
+
+
+    booking.status =
+      'Cancelled';
+
+    booking.paymentVerified =
+      false;
+
+
+    sync();
+
+  }
+
+
+  /* ============================================================
+     COMPLETE BOOKING
+     ============================================================ */
+
+  function completeBooking(id) {
+
+    const booking =
+      bookings.find(
+        b =>
+          String(b.id) ===
+          String(id)
+      );
+
+    if (!booking) return;
+
+
+    booking.status =
+      'Completed';
+
+
+    sync();
+
+  }
+
+
+  /* ============================================================
+     GOOGLE CALENDAR
+     ============================================================ */
+
+  function syncGCal(id) {
+
+    const booking =
+      bookings.find(
+        b =>
+          String(b.id) ===
+          String(id)
+      );
+
+    if (!booking) return;
+
+
+    const start =
+      new Date(
+        booking.start
+      )
+        .toISOString()
+        .replace(
+          /-|:|\.\d\d\d/g,
+          ''
+        );
+
+
+    const end =
+      new Date(
+        booking.end
+      )
+        .toISOString()
+        .replace(
+          /-|:|\.\d\d\d/g,
+          ''
+        );
+
+
+    const details =
+      [
+        `Customer: ${booking.customer}`,
+        `Camera: ${booking.camName}`,
+        `Rental Fee: ₱${money(booking.price)}`,
+        `Security Deposit: ₱${money(booking.deposit)}`,
+        `Reservation Paid: ₱${money(booking.reservationFee)}`,
+        `Remaining Deposit: ₱${money(
+          Math.max(
+            0,
+            booking.deposit -
+            booking.reservationFee
+          )
+        )}`
+      ].join('\n');
+
+
+    const url =
+      `https://calendar.google.com/calendar/render?action=TEMPLATE` +
+      `&text=${encodeURIComponent(
+        'Rental: ' +
+        booking.camName +
+        ' - ' +
+        booking.customer
+      )}` +
+      `&dates=${start}/${end}` +
+      `&details=${encodeURIComponent(
+        details
+      )}`;
+
+
+    window.open(
+      url,
+      '_blank'
+    );
+
+  }
+
+
+  /* ============================================================
+     DEPOSIT REFUND SYSTEM
+     ============================================================ */
+
+  function refundTaskIsReady(
+    booking
+  ) {
+
+    if (
+      !booking.paymentVerified ||
+      booking.depositReturned ||
+      isBookingCancelled(booking)
+    ) {
+      return false;
+    }
+
+
+    const now =
+      Date.now();
+
+    const end =
+      new Date(
+        booking.end
+      ).getTime();
+
+
+    const oneHourBefore =
+      end -
+      60 * 60 * 1000;
+
+
+    return now >=
+      oneHourBefore;
+
+  }
+
+
+  function completeDepositRefund(
+    id
+  ) {
+
+    const booking =
+      bookings.find(
+        b =>
+          String(b.id) ===
+          String(id)
+      );
+
+    if (!booking) return;
+
+
+    if (
+      !refundTaskIsReady(
+        booking
+      )
+    ) {
+
+      alert(
+        'This deposit refund task is not ready yet. It becomes available one hour before the booking ends.'
+      );
+
+      return;
+
+    }
+
+
+    const remainingDeposit =
+      Math.max(
+        0,
+        Number(booking.deposit || 0) -
+        Number(booking.reservationFee || 0)
+      );
+
+
+    if (
+      !confirm(
+        `Mark the deposit refund as completed?\n\nCustomer: ${booking.customer}\nRefund amount: ₱${money(remainingDeposit)}`
+      )
+    ) {
+      return;
+    }
+
+
+    booking.depositReturned =
+      true;
+
+    booking.depositRefundCompletedAt =
+      new Date().toISOString();
+
+
+    sync();
+
+  }
+
+
+  function renderDepositTasks() {
+
+    const activeBox =
+      document
+        .getElementById(
+          'depositTaskList'
+        );
+
+
+    const completedBox =
+      document
+        .getElementById(
+          'completedDepositTaskList'
+        );
+
+
+    const eligibleBookings =
+      bookings.filter(
+        b =>
+          b.paymentVerified &&
+          !isBookingCancelled(b)
+      );
+
+
+    const active =
+      eligibleBookings.filter(
+        b =>
+          !b.depositReturned &&
+          refundTaskIsReady(b)
+      );
+
+
+    const upcoming =
+      eligibleBookings.filter(
+        b =>
+          !b.depositReturned &&
+          !refundTaskIsReady(b)
+      );
+
+
+    if (!active.length) {
+
+      activeBox.innerHTML =
+        `
+        <div class="empty">
+          No deposit refund tasks are currently ready.
+        </div>
+        `;
+
+    } else {
+
+      activeBox.innerHTML =
+        active.map(
+          b => {
+
+            const remaining =
+              Math.max(
+                0,
+                Number(b.deposit || 0) -
+                Number(
+                  b.reservationFee || 0
+                )
+              );
+
+
+            const overdue =
+              new Date(b.end) <
+              new Date();
+
+
+            return `
+
+              <div class="
+                deposit-task
+                ${overdue ? 'overdue' : 'ready'}
+              ">
+
+                <strong>
+                  ${escapeHTML(b.customer)}
+                </strong>
+
+                <br>
+
+                <span class="muted">
+                  ${escapeHTML(b.camName)}
+                </span>
+
+                <div class="task-time">
+
+                  Booking ends:
+                  ${formatDate(b.end)}
+
+                  <br>
+
+                  Refund amount:
+                  <strong>
+                    ₱${money(remaining)}
+                  </strong>
+
+                </div>
+
+                <button
+                  class="btn-small"
+                  style="margin-top:8px;"
+                  onclick="completeDepositRefund(${JSON.stringify(b.id)})"
+                >
+                  ✓ Complete Refund Task
+                </button>
+
+              </div>
+
+            `;
+
+          }
+        ).join('');
+
+    }
+
+
+    const completed =
+      eligibleBookings
+        .filter(
+          b =>
+            b.depositReturned
+        )
+        .sort(
+          (a,b) =>
+            new Date(
+              b.depositRefundCompletedAt ||
+              0
+            ) -
+            new Date(
+              a.depositRefundCompletedAt ||
+              0
+            )
+        )
+        .slice(0, 10);
+
+
+    if (!completed.length) {
+
+      completedBox.innerHTML =
+        `
+        <div class="empty">
+          No completed refund tasks yet.
+        </div>
+        `;
+
+    } else {
+
+      completedBox.innerHTML =
+        completed.map(
+          b => {
+
+            const refund =
+              Math.max(
+                0,
+                Number(b.deposit || 0) -
+                Number(
+                  b.reservationFee || 0
+                )
+              );
+
+
+            return `
+
+              <div class="
+                deposit-task
+                deposit-completed
+              ">
+
+                <strong>
+                  ✓ ${escapeHTML(b.customer)}
+                </strong>
+
+                <br>
+
+                <span class="muted">
+                  ${escapeHTML(b.camName)}
+                </span>
+
+                <div class="task-time">
+
+                  Refunded:
+                  ₱${money(refund)}
+
+                  <br>
+
+                  Completed:
+                  ${formatDate(
+                    b.depositRefundCompletedAt
+                  )}
+
+                </div>
+
+              </div>
+
+            `;
+
+          }
+        ).join('');
+
+    }
+
+
+    /*
+     * Upcoming tasks are intentionally not shown
+     * in the active list.
+     *
+     * They will appear automatically one hour
+     * before the booking ends.
+     */
+
+  }
+
+
+  /* ============================================================
+     SALES
+     * ============================================================ */
+
+  function startOfDay(date) {
+
+    const d =
+      new Date(date);
+
+    d.setHours(
+      0,0,0,0
+    );
+
+    return d;
+
+  }
+
+
+  function startOfWeek(date) {
+
+    const d =
+      startOfDay(date);
+
+    const day =
+      d.getDay();
+
+    const diff =
+      day === 0
+        ? -6
+        : 1 - day;
+
+    d.setDate(
+      d.getDate() + diff
+    );
+
+    return d;
+
+  }
+
+
+  function startOfMonth(date) {
+
+    const d =
+      startOfDay(date);
+
+    d.setDate(1);
+
+    return d;
+
+  }
+
+
+  function startOfQuarter(date) {
+
+    const d =
+      startOfMonth(date);
+
+    const month =
+      d.getMonth();
+
+    d.setMonth(
+      Math.floor(month / 3) * 3
+    );
+
+    return d;
+
+  }
+
+
+  function startOfYear(date) {
+
+    const d =
+      startOfDay(date);
+
+    d.setMonth(0);
+
+    d.setDate(1);
+
+    return d;
+
+  }
+
+
+  function getSalesStart(
+    period
+  ) {
+
+    const now =
+      new Date();
+
+
+    if (period === 'daily') {
+      return startOfDay(now);
+    }
+
+    if (period === 'weekly') {
+      return startOfWeek(now);
+    }
+
+    if (period === 'monthly') {
+      return startOfMonth(now);
+    }
+
+    if (period === 'quarterly') {
+      return startOfQuarter(now);
+    }
+
+    if (period === 'yearly') {
+      return startOfYear(now);
+    }
+
+    return startOfDay(now);
+
+  }
+
+
+  function getSalesEnd(
+    period
+  ) {
+
+    const start =
+      getSalesStart(period);
+
+    const end =
+      new Date(start);
+
+
+    if (period === 'daily') {
+      end.setDate(
+        end.getDate() + 1
+      );
+    }
+
+    if (period === 'weekly') {
+      end.setDate(
+        end.getDate() + 7
+      );
+    }
+
+    if (period === 'monthly') {
+      end.setMonth(
+        end.getMonth() + 1
+      );
+    }
+
+    if (period === 'quarterly') {
+      end.setMonth(
+        end.getMonth() + 3
+      );
+    }
+
+    if (period === 'yearly') {
+      end.setFullYear(
+        end.getFullYear() + 1
+      );
+    }
+
+
+    return end;
+
+  }
+
+
+  function getSalesBookings() {
+
+    const start =
+      getSalesStart(
+        currentSalesPeriod
+      );
+
+    const end =
+      getSalesEnd(
+        currentSalesPeriod
+      );
+
+
+    return bookings.filter(b => {
+
+      if (
+        !b.paymentVerified ||
+        isBookingCancelled(b)
+      ) {
+        return false;
+      }
+
+
+      /*
+       * Sales are attributed to the
+       * payment verification date.
+       *
+       * For old bookings without that field,
+       * booking start date is used.
+       */
+
+      const salesDate =
+        new Date(
+          b.paymentVerifiedAt ||
+          b.start
+        );
+
+
+      return (
+        salesDate >= start &&
+        salesDate < end
+      );
+
+    });
+
+  }
+
+
+  function changeSalesPeriod(
+    period
+  ) {
+
+    currentSalesPeriod =
+      period;
+
+
+    document
+      .querySelectorAll(
+        '.sales-tab'
+      )
+      .forEach(button => {
+
+        button.classList.toggle(
+          'active',
+          button.dataset.period ===
+            period
+        );
+
+      });
+
+
+    renderSales();
+
+  }
+
+
+  function renderSales() {
+
+    const salesBookings =
+      getSalesBookings();
+
+
+    const total =
+      salesBookings.reduce(
+        (sum,b) =>
+          sum +
+          Number(b.price || 0),
+        0
+      );
+
+
+    const labels = {
+
+      daily:
+        "Today's Verified Sales",
+
+      weekly:
+        "This Week's Verified Sales",
+
+      monthly:
+        "This Month's Verified Sales",
+
+      quarterly:
+        "This Quarter's Verified Sales",
+
+      yearly:
+        "This Year's Verified Sales"
+
+    };
+
+
+    document
+      .getElementById(
+        'salesPeriodLabel'
+      )
+      .innerText =
+        labels[
+          currentSalesPeriod
+        ];
+
+
+    document
+      .getElementById(
+        'confirmedRevenue'
+      )
+      .innerText =
+        money(total);
+
+
+    const breakdown =
+      document
+        .getElementById(
+          'salesBreakdown'
+        );
+
+
+    if (!salesBookings.length) {
+
+      breakdown.innerHTML =
+        `
+        No verified sales for this period.
+        `;
+
+      return;
+
+    }
+
+
+    const byCamera = {};
+
+
+    salesBookings.forEach(b => {
+
+      if (
+        !byCamera[b.camName]
+      ) {
+        byCamera[b.camName] = 0;
+      }
+
+      byCamera[b.camName] +=
+        Number(b.price || 0);
+
+    });
+
+
+    breakdown.innerHTML = `
+
+      <strong>
+        ${salesBookings.length}
+        verified booking${salesBookings.length !== 1 ? 's' : ''}
+      </strong>
+
+      <br><br>
+
+      ${Object.entries(
+        byCamera
+      ).map(
+        ([camera, amount]) =>
+          `
+          ${escapeHTML(camera)}:
+          <strong>
+            ₱${money(amount)}
+          </strong>
+          <br>
+          `
+      ).join('')}
+
+    `;
+
+  }
+
+
+  /* ============================================================
+     BOOKING RENDER
+     ============================================================ */
+
+  function getBookingStatusClass(
+    booking
+  ) {
+
+    if (
+      isBookingCancelled(
+        booking
+      )
+    ) {
+      return 'status-cancelled';
+    }
+
+    if (
+      booking.status ===
+      'Confirmed & Paid'
+    ) {
+      return 'status-confirmed';
+    }
+
+    return 'status-pending';
+
+  }
+
+
+  function renderBookings() {
+
+    const box =
+      document
+        .getElementById(
+          'bookingList'
+        );
+
+
+    const search =
+      (
+        document
+          .getElementById(
+            'bookingSearch'
+          )
+          .value ||
+        ''
+      )
+        .toLowerCase();
+
+
+    const filter =
+      document
+        .getElementById(
+          'bookingFilter'
+        )
+        .value;
+
+
+    let filtered =
+      [...bookings];
+
+
+    if (search) {
+
+      filtered =
+        filtered.filter(
+          b =>
+            [
+              b.customer,
+              b.contact,
+              b.camName,
+              b.status,
+              b.notes
+            ]
+              .join(' ')
+              .toLowerCase()
+              .includes(search)
+        );
+
+    }
+
+
+    if (filter !== 'all') {
+
+      filtered =
+        filtered.filter(
+          b => {
+
+            if (
+              filter ===
+              'pending'
+            ) {
+              return (
+                !b.paymentVerified &&
+                !isBookingCancelled(b)
+              );
+            }
+
+
+            if (
+              filter ===
+              'confirmed'
+            ) {
+              return (
+                b.paymentVerified &&
+                b.status ===
+                  'Confirmed & Paid'
+              );
+            }
+
+
+            if (
+              filter ===
+              'cancelled'
+            ) {
+              return isBookingCancelled(b);
+            }
+
+
+            if (
+              filter ===
+              'completed'
+            ) {
+              return (
+                b.status ===
+                'Completed'
+              );
+            }
+
+
+            if (
+              filter ===
+              'active'
+            ) {
+
+              const now =
+                new Date();
+
+              return (
+                b.paymentVerified &&
+                !isBookingCancelled(b) &&
+                new Date(b.start) <= now &&
+                new Date(b.end) >= now
+              );
+
+            }
+
+
+            return true;
+
+          }
+        );
+
+    }
+
+
+    filtered.sort(
+      (a,b) =>
+        new Date(b.start) -
+        new Date(a.start)
+    );
+
+
+    if (!filtered.length) {
+
+      box.innerHTML =
+        `
+        <div class="empty">
+          No bookings found.
+        </div>
+        `;
+
+      return;
+
+    }
+
+
+    box.innerHTML =
+      filtered.map(
+        b => {
+
+          const remainingDeposit =
+            Math.max(
+              0,
+              Number(b.deposit || 0) -
+              Number(
+                b.reservationFee || 0
+              )
+            );
+
+
+          const statusClass =
+            getBookingStatusClass(b);
+
+
+          const cancelled =
+            isBookingCancelled(b);
+
+
+          const isPast =
+            new Date(b.end) <
+            new Date();
+
+
+          return `
+
+            <div class="
+              booking-item
+              ${b.paymentVerified ? 'verified' : ''}
+              ${cancelled ? 'cancelled' : ''}
+              ${b.status === 'Completed' ? 'completed' : ''}
+            ">
+
+              <div class="booking-header">
+
+                <div>
+
+                  <div class="booking-customer">
+                    ${escapeHTML(
+                      b.customer
+                    )}
+                  </div>
+
+                  <div class="booking-camera">
+                    ${escapeHTML(
+                      b.camName
+                    )}
+                  </div>
+
+                </div>
+
+                <span class="
+                  status-badge
+                  ${statusClass}
+                ">
+                  ${escapeHTML(
+                    b.status
+                  )}
+                </span>
+
+              </div>
+
+
+              <div class="booking-details">
+
+                <strong>Rental Period:</strong>
+                ${formatDate(b.start)}
+                →
+                ${formatDate(b.end)}
+
+                <br>
+
+                <strong>Contact:</strong>
+                ${escapeHTML(
+                  b.contact || 'Not provided'
+                )}
+
+                ${
+                  b.notes
+                    ? `
+                      <br>
+                      <strong>Notes:</strong>
+                      ${escapeHTML(b.notes)}
+                    `
+                    : ''
+                }
+
+              </div>
+
+
+              <div class="booking-financial">
+
+                Rental Fee:
+                <strong>
+                  ₱${money(b.price)}
+                </strong>
+
+                <br>
+
+                Security Deposit:
+                <strong>
+                  ₱${money(b.deposit)}
+                </strong>
+
+                <br>
+
+                Reservation Paid:
+                <strong>
+                  ₱${money(
+                    b.reservationFee
+                  )}
+                </strong>
+
+                <br>
+
+                Remaining Deposit:
+                <strong>
+                  ₱${money(
+                    remainingDeposit
+                  )}
+                </strong>
+
+                ${
+                  b.depositReturned
+                    ? `
+                      <br>
+                      <span class="text-success">
+                        ✓ Deposit refund completed
+                      </span>
+                    `
+                    : ''
+                }
+
+              </div>
+
+
+              <div class="btn-group">
+
+                ${
+                  !cancelled &&
+                  !b.paymentVerified
+                    ? `
+                      <button
+                        class="btn-small"
+                        onclick="verifyPayment(${JSON.stringify(b.id)})"
+                      >
+                        Confirm Payment
+                      </button>
+                    `
+                    : ''
+                }
+
+
+                ${
+                  !cancelled
+                    ? `
+                      <button
+                        class="btn-small btn-blue"
+                        onclick="editBooking(${JSON.stringify(b.id)})"
+                      >
+                        Edit Booking
+                      </button>
+                    `
+                    : ''
+                }
+
+
+                ${
+                  !cancelled &&
+                  !isPast
+                    ? `
+                      <button
+                        class="btn-small btn-danger"
+                        onclick="cancelBooking(${JSON.stringify(b.id)})"
+                      >
+                        Cancel Booking
+                      </button>
+                    `
+                    : ''
+                }
+
+
+                ${
+                  b.paymentVerified &&
+                  isPast &&
+                  b.status !== 'Completed'
+                    ? `
+                      <button
+                        class="btn-small btn-purple"
+                        onclick="completeBooking(${JSON.stringify(b.id)})"
+                      >
+                        Mark Completed
+                      </button>
+                    `
+                    : ''
+                }
+
+
+                ${
+                  !cancelled
+                    ? `
+                      <button
+                        class="btn-small btn-gray"
+                        onclick="syncGCal(${JSON.stringify(b.id)})"
+                      >
+                        Export GCal
+                      </button>
+                    `
+                    : ''
+                }
+
+              </div>
+
+            </div>
+
+          `;
+
+        }
+      ).join('');
+
+  }
+
+
+  /* ============================================================
+     AVAILABILITY PANEL
+     ============================================================ */
+
+  function renderAvailability() {
+
+    const box =
+      document
+        .getElementById(
+          'availabilityList'
+        );
+
+
+    if (!inventory.length) {
+
+      box.innerHTML =
+        `
+        <div class="empty">
+          No cameras in inventory.
+        </div>
+        `;
+
+      return;
+
+    }
+
+
+    const now =
+      new Date();
+
+
+    box.innerHTML =
+      inventory.map(
+        unit => {
+
+          const upcoming =
+            bookings
+              .filter(
+                b =>
+                  b.camName ===
+                  unit.name &&
+                  isBookingBlocking(b) &&
+                  new Date(b.end) >
+                    now
+              )
+              .sort(
+                (a,b) =>
+                  new Date(a.start) -
+                  new Date(b.start)
+              )
+              .slice(0,5);
+
+
+          return `
+
+            <div class="availability-box">
+
+              <strong>
+                ${escapeHTML(
+                  unit.name
+                )}
+              </strong>
+
+              <br>
+
+              ${
+                upcoming.length
+                  ? `
+                    <span class="unavailable-label">
+                      Not available during:
+                    </span>
+
+                    <br>
+
+                    ${upcoming.map(
+                      b =>
+                        `
+                        <span class="availability-date">
+                          ${formatDate(b.start)}
+                          →
+                          ${formatDate(b.end)}
+                        </span>
+                        `
+                    ).join('')}
+
+                  `
+                  : `
+                    <span class="available-label">
+                      ✓ No upcoming rentals
+                    </span>
+                  `
+              }
+
+            </div>
+
+          `;
+
+        }
+      ).join('');
+
+  }
+
+
+  /* ============================================================
+     STATISTICS
+     ============================================================ */
+
+  function renderStats() {
+
+    const now =
+      new Date();
+
+
+    const activeBookings =
+      bookings.filter(
+        b =>
+          b.paymentVerified &&
+          !isBookingCancelled(b) &&
+          new Date(b.start) <= now &&
+          new Date(b.end) >= now
+      ).length;
+
+
+    const revenue =
+      bookings
+        .filter(
+          b =>
+            b.paymentVerified &&
+            !isBookingCancelled(b)
+        )
+        .reduce(
+          (sum,b) =>
+            sum +
+            Number(b.price || 0),
+          0
+        );
+
+
+    const refunds =
+      bookings.filter(
+        b =>
+          b.paymentVerified &&
+          !b.depositReturned &&
+          !isBookingCancelled(b) &&
+          refundTaskIsReady(b)
+      ).length;
+
+
+    document
+      .getElementById(
+        'statUnits'
+      )
+      .innerText =
+        inventory.length;
+
+
+    document
+      .getElementById(
+        'statBookings'
+      )
+      .innerText =
+        activeBookings;
+
+
+    document
+      .getElementById(
+        'statRevenue'
+      )
+      .innerText =
+        money(revenue);
+
+
+    document
+      .getElementById(
+        'statRefunds'
+      )
+      .innerText =
+        refunds;
+
+  }
+
+
+  /* ============================================================
+     MAIN RENDER
+     ============================================================ */
+
+  function render() {
+
+    renderInventory();
+
+    renderBookings();
+
+    renderDepositTasks();
+
+    renderSales();
+
+    renderAvailability();
+
+    renderStats();
+
+  }
+
+
+  /* ============================================================
+     MODAL CLICK OUTSIDE
+     ============================================================ */
+
+  document
+    .querySelectorAll(
+      '.modal-backdrop'
+    )
+    .forEach(
+      modal => {
+
+        modal.addEventListener(
+          'click',
+          function(e) {
+
+            if (
+              e.target === modal
+            ) {
+
+              modal.classList.remove(
+                'open'
+              );
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+
+  /* ============================================================
+     AUTO REFRESH
+     ============================================================
+     
+     This is important for the deposit refund system.
+     
+     If the admin dashboard remains open, it will
+     automatically notice when a booking reaches
+     the 1-hour-before-end threshold.
+     */
+
+  setInterval(
+    function() {
+
+      renderDepositTasks();
+
+      renderStats();
+
+    },
+    30000
+  );
+
+
+  /* ============================================================
+     INITIALIZE
+     ============================================================ */
+
+  migrateData();
+
+  render();
+
+</script>
+
 </body>
 </html>
