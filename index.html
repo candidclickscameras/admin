@@ -1548,8 +1548,8 @@
     }
 
    const rate =
-  duration.days > 1
-    ? Number(
+duration.days >= 4
+     ? Number(
         unit.multiDayRate ||
         unit.daily ||
         0
