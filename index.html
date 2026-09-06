@@ -693,8 +693,8 @@
         >
 
         <div class="notice">
-          The Multi-Day Daily Rate is used when the rental exceeds 24 hours.
-          Example: Daily Rate ₱1,000, Multi-Day Rate ₱850 → a 3-day rental is ₱2,550.
+          The Multi-Day Daily Rate is used only for rentals of 4 days or more.
+          Rentals of 1–3 days use the normal Daily Rate.
         </div>
 
         <button class="btn" type="submit">
@@ -1535,50 +1535,28 @@
   ) {
 
     if (!unit || !start || !end) {
-      return {
-        price: 0,
-        days: 0,
-        hours: 0,
-        rate: 0
-      };
+      return { price: 0, days: 0, hours: 0, rate: 0 };
     }
 
-    const duration =
-      getDuration(
-        start,
-        end
-      );
+    const duration = getDuration(start, end);
 
     if (!duration) {
-      return {
-        price: 0,
-        days: 0,
-        hours: 0,
-        rate: 0
-      };
+      return { price: 0, days: 0, hours: 0, rate: 0 };
     }
 
-   const rate =
-duration.days >= 4
-     ? Number(
-        unit.multiDayRate ||
-        unit.daily ||
-        0
-      )
-    : Number(
-        unit.daily || 0
-      );
- const rate =
-  duration.days >= 4
-    ? Number(
-        unit.multiDayRate ||
-        unit.daily ||
-        0
-      )
-    : Number(
-        unit.daily || 0
-      );
+    const rate =
+      duration.days >= 4
+        ? Number(unit.multiDayRate || unit.daily || 0)
+        : Number(unit.daily || 0);
 
+    const price = rate * duration.days;
+
+    return {
+      price,
+      days: duration.days,
+      hours: duration.hours,
+      rate
+    };
   }
 
 
