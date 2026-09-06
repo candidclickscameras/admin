@@ -1547,26 +1547,26 @@
       };
     }
 
-    const rate =
-      duration.days > 1
-        ? Number(
-            unit.multiDayRate ||
-            unit.daily ||
-            0
-          )
-        : Number(
-            unit.daily || 0
-          );
-
-    const price =
-      rate * duration.days;
-
-    return {
-      price,
-      days: duration.days,
-      hours: duration.hours,
-      rate
-    };
+   const rate =
+  duration.days > 1
+    ? Number(
+        unit.multiDayRate ||
+        unit.daily ||
+        0
+      )
+    : Number(
+        unit.daily || 0
+      );
+ const rate =
+  duration.days >= 4
+    ? Number(
+        unit.multiDayRate ||
+        unit.daily ||
+        0
+      )
+    : Number(
+        unit.daily || 0
+      );
 
   }
 
