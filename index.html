@@ -7,27 +7,27 @@
 
   <style>
     :root {
-      --brand: #365cab; 
-      --brand-dark: #294b90; 
+      --brand: #2b52ba; 
+      --brand-dark: #1b388a; 
       --cream: #fff2c7;
       --navy: #16233f; 
       --ink: #172033; 
       --muted: #667085; 
-      --bg: #f4f6fb;
+      --bg: #eef3fb;
       --card: #ffffff; 
       --card-soft: #f8faff; 
-      --border: #e3e8f2;
-      --success: #14866d; 
-      --success-soft: #e7f6f1;
-      --warning: #b77908; 
-      --warning-soft: #fff5d9;
-      --danger: #c53d48; 
-      --danger-soft: #fff0f1;
+      --border: #dce4f1;
+      --green: #14866d; 
+      --green-soft: #e7f6f1;
+      --orange: #b77908; 
+      --orange-soft: #fff5d9;
+      --red: #c53d48; 
+      --red-soft: #fff0f1;
       --info: #3567b8; 
       --info-soft: #edf3ff; 
       --purple: #6d4bc3;
-      --shadow: 0 10px 30px rgba(28,49,89,.08);
-      --shadow-lg: 0 22px 55px rgba(28,49,89,.16);
+      --shadow: 0 10px 30px rgba(27,56,138,.08);
+      --shadow-lg: 0 22px 55px rgba(27,56,138,.16);
       --radius: 18px;
     }
     
@@ -36,84 +36,96 @@
     
     body {
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at 10% 0%, rgba(54,92,171,.08), transparent 26%),
+      background: radial-gradient(circle at 10% 0%, rgba(43,82,186,.08), transparent 26%),
                  radial-gradient(circle at 90% 0%, rgba(255,242,199,.32), transparent 25%), var(--bg);
       color: var(--ink);
       margin: 0;
-      padding: 28px;
+      padding: 24px;
       line-height: 1.45;
     }
 
     button, input, select, textarea { font: inherit; }
     button { border: 0; cursor: pointer; }
 
-    .container { max-width: 1500px; margin: auto; }
+    .container { max-width: 1400px; margin: auto; }
 
+    /* BRAND HEADER */
     .page-header {
       display: flex;
       align-items: center;
       gap: 22px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       padding: 20px 24px;
-      background: linear-gradient(135deg, var(--brand), #426fc1);
-      border-radius: 24px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+      border-radius: 20px;
       box-shadow: var(--shadow-lg);
       color: #fff;
       position: relative;
       overflow: hidden;
     }
-    
-    .page-header::after {
-      content: "";
-      position: absolute;
-      width: 240px;
-      height: 240px;
-      border-radius: 50%;
-      right: -70px;
-      top: -120px;
-      background: rgba(255,242,199,.14);
-    }
 
     .brand-logo {
-      width: 100px;
-      height: 100px;
+      width: 110px;
+      height: 90px;
       object-fit: contain;
-      border-radius: 20px;
-      background: #ffffff;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.15);
       padding: 6px;
       flex: 0 0 auto;
-      box-shadow: 0 8px 20px rgba(0,0,0,.14);
-      position: relative;
-      z-index: 1;
+      backdrop-filter: blur(5px);
     }
 
-    .header-copy { position: relative; z-index: 1; }
-
+    .header-copy { position: relative; z-index: 1; flex: 1; }
     .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
       color: var(--cream);
       font-size: .74rem;
       font-weight: 800;
       letter-spacing: .12em;
       text-transform: uppercase;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
     }
-
     .page-header h1 {
       margin: 0 0 4px;
       font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(1.7rem, 3vw, 2.25rem);
-      letter-spacing: -.03em;
+      font-size: clamp(1.6rem, 2.8vw, 2.1rem);
     }
-
     .page-header p {
-      color: rgba(255,255,255,.84);
+      color: rgba(255,255,255,.85);
       margin: 0;
-      font-size: .9rem;
+      font-size: .88rem;
     }
 
+    /* TOP MENU NAVIGATION */
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+      background: var(--card);
+      padding: 8px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      margin-bottom: 22px;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--muted);
+      background: transparent;
+      transition: all .2s;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tab-btn:hover { background: var(--bg); color: var(--navy); }
+    .tab-btn.active { background: var(--brand); color: #fff; box-shadow: 0 4px 12px rgba(43,82,186,.25); }
+
+    /* DASHBOARD STATS BAR */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -125,26 +137,22 @@
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 19px;
+      padding: 18px;
       box-shadow: var(--shadow);
       position: relative;
       overflow: hidden;
-      transition: transform .15s;
     }
-    .stat-card:hover { transform: translateY(-2px); }
 
     .stat-card::before {
       content: "";
       position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
+      left: 0; top: 0; bottom: 0;
       width: 4px;
       background: var(--brand);
     }
-    .stat-card:nth-child(2)::before { background: var(--success); }
+    .stat-card:nth-child(2)::before { background: var(--green); }
     .stat-card:nth-child(3)::before { background: #d7b85d; }
-    .stat-card:nth-child(4)::before { background: var(--danger); }
+    .stat-card:nth-child(4)::before { background: var(--red); }
 
     .stat-label {
       color: var(--muted);
@@ -155,64 +163,39 @@
     }
 
     .stat-value {
-      font-size: 1.65rem;
+      font-size: 1.6rem;
       font-weight: 900;
-      margin-top: 6px;
+      margin-top: 4px;
       color: var(--navy);
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 20px;
-      align-items: start;
-    }
+    /* TAB CONTENT SECTIONS */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
 
     .card {
-      background: rgba(255,255,255,.96);
+      background: var(--card);
       border: 1px solid var(--border);
-      padding: 21px;
+      padding: 24px;
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      min-width: 0;
+      margin-bottom: 20px;
     }
-
-    .card.span-2 { grid-column: span 2; }
-
-    .card-header-flex {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 17px;
-      padding-bottom: 11px;
-      border-bottom: 1px solid var(--border);
-      position: relative;
-    }
-    .card-header-flex h2 {
-      margin: 0;
-      padding: 0;
-      border: 0;
-    }
-    .card-header-flex h2::after { display: none; }
-
-    h2, h3 { margin-top: 0; color: var(--navy); }
 
     h2 {
       font-family: Georgia, "Times New Roman", serif;
-      font-size: 1.2rem;
-      margin-bottom: 17px;
-      padding-bottom: 11px;
+      font-size: 1.25rem;
+      margin: 0 0 16px;
+      padding-bottom: 10px;
       border-bottom: 1px solid var(--border);
+      color: var(--navy);
       position: relative;
     }
-
     h2::after {
       content: "";
       position: absolute;
-      left: 0;
-      bottom: -1px;
-      width: 62px;
-      height: 3px;
+      left: 0; bottom: -1px;
+      width: 50px; height: 3px;
       background: var(--brand);
       border-radius: 5px;
     }
@@ -222,7 +205,7 @@
       text-transform: uppercase;
       letter-spacing: .08em;
       color: var(--muted);
-      margin: 22px 0 10px;
+      margin: 20px 0 10px;
     }
 
     label {
@@ -244,16 +227,12 @@
       transition: border-color .15s, box-shadow .15s;
     }
 
-    input::placeholder, textarea::placeholder { color: #98a2b3; }
-
     input:focus, select:focus, textarea:focus {
       border-color: var(--brand);
-      box-shadow: 0 0 0 4px rgba(54,92,171,.11);
+      box-shadow: 0 0 0 4px rgba(43,82,186,.11);
     }
 
     input[readonly] { background: #f5f7fb; color: #526071; }
-
-    textarea { resize: vertical; min-height: 86px; }
 
     .btn {
       width: 100%;
@@ -263,7 +242,7 @@
       color: #fff;
       font-weight: 800;
       margin-top: 10px;
-      box-shadow: 0 6px 15px rgba(54,92,171,.18);
+      box-shadow: 0 6px 15px rgba(43,82,186,.18);
       transition: transform .15s, filter .15s;
     }
 
@@ -273,34 +252,29 @@
     }
 
     .btn-small {
-      padding: 8px 11px;
+      padding: 8px 12px;
       border-radius: 9px;
       font-size: .76rem;
       font-weight: 800;
       background: var(--brand);
       color: #fff;
-      box-shadow: 0 4px 10px rgba(28,49,89,.08);
+      box-shadow: 0 4px 10px rgba(27,56,138,.08);
       transition: transform .15s, filter .15s;
     }
 
-    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-danger { background: var(--red); color: #fff; }
     .btn-blue { background: var(--info); color: #fff; }
     .btn-purple { background: var(--purple); color: #fff; }
-    .btn-warning { background: #e4a51a; color: #fff; }
     .btn-gray { background: #5b6678; color: #fff; }
-    .btn-outline { background: transparent; color: var(--brand); border: 1px solid var(--brand); }
 
     .btn-group { display: flex; gap: 7px; margin-top: 11px; flex-wrap: wrap; }
-    .btn-group button { flex: 1; min-width: 120px; }
-
-    .booking-actions { display: flex; gap: 8px; margin: 0 0 13px; }
-    .booking-actions button { min-width: 130px; }
+    .btn-group button { flex: 1; min-width: 110px; }
 
     .booking-toolbar {
       display: grid;
       grid-template-columns: 2fr 1fr;
       gap: 12px;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
 
     .unit-item, .booking-item, .deposit-task, .availability-box {
@@ -309,24 +283,15 @@
       border-left: 4px solid var(--brand);
       border-radius: 13px;
       padding: 14px;
+      margin-bottom: 12px;
     }
 
-    .unit-item, .booking-item, .deposit-task { margin-bottom: 11px; }
+    .unit-name, .booking-customer { font-weight: 850; color: var(--navy); font-size: .95rem; }
+    .unit-meta, .booking-details, .sales-breakdown, .task-time { color: var(--muted); font-size: .78rem; line-height: 1.65; }
 
-    .unit-name, .booking-customer { font-weight: 850; color: var(--navy); }
-    .unit-name { font-size: .95rem; }
-
-    .unit-meta, .booking-details, .sales-breakdown, .task-time {
-      color: var(--muted);
-      font-size: .78rem;
-      line-height: 1.65;
-    }
-
-    .unit-availability { margin-top: 9px; font-size: .75rem; }
-
-    .booking-item { border-left-color: #d69b1d; }
-    .booking-item.verified { border-left-color: var(--success); }
-    .booking-item.cancelled { border-left-color: var(--danger); background: #fff8f8; opacity: 1; }
+    .booking-item { border-left-color: var(--orange); }
+    .booking-item.verified { border-left-color: var(--green); }
+    .booking-item.cancelled { border-left-color: var(--red); background: #fff8f8; }
     .booking-item.completed { border-left-color: var(--info); }
 
     .booking-header { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
@@ -344,11 +309,9 @@
       white-space: nowrap;
     }
 
-    .status-confirmed { background: var(--success-soft); color: var(--success); }
-    .status-pending { background: var(--warning-soft); color: var(--warning); }
-    .status-cancelled { background: var(--danger-soft); color: var(--danger); }
-
-    .booking-details { margin-top: 10px; }
+    .status-confirmed { background: var(--green-soft); color: var(--green); }
+    .status-pending { background: var(--orange-soft); color: var(--orange); }
+    .status-cancelled { background: var(--red-soft); color: var(--red); }
 
     .booking-financial {
       margin-top: 11px;
@@ -360,93 +323,70 @@
     }
     .booking-financial strong { color: var(--navy); }
 
-    .deposit-task { border-left-color: #d69b1d; }
-    .deposit-task.ready { border-left-color: var(--success); }
-    .deposit-task.overdue { border-left-color: var(--danger); }
-    .deposit-completed { border-left-color: var(--success); opacity: .8; }
+    .deposit-task.ready { border-left-color: var(--green); }
+    .deposit-task.overdue { border-left-color: var(--red); }
+    .deposit-completed { border-left-color: var(--green); opacity: .8; }
 
-    .sales-tabs { display: grid; grid-template-columns: repeat(5,1fr); gap: 6px; margin-bottom: 14px; }
+    .sales-tabs { display: flex; gap: 6px; margin-bottom: 16px; overflow-x: auto; }
     .sales-tab {
-      padding: 9px 5px;
+      padding: 8px 14px;
       border-radius: 999px;
       background: #edf0f5;
       color: #4e596b;
-      font-size: .72rem;
+      font-size: .75rem;
       font-weight: 800;
-      text-align: center;
-      transition: all .2s;
     }
     .sales-tab.active { background: var(--brand); color: #fff; }
 
     .sales-total {
       text-align: center;
-      padding: 21px 15px;
+      padding: 20px;
       background: linear-gradient(145deg, #f7f9ff, #fffaf0);
       border: 1px solid var(--border);
-      border-radius: 13px;
-      margin-bottom: 15px;
+      border-radius: 14px;
+      margin-bottom: 16px;
     }
-    .sales-total .amount { font-size: 2rem; font-weight: 950; color: var(--brand); margin-top: 4px; }
+    .sales-total .amount { font-size: 2.1rem; font-weight: 950; color: var(--brand); margin-top: 4px; }
 
-    .sales-breakdown { font-size: .79rem; }
-
-    .availability-box { border-left-color: var(--info); margin-top: 10px; font-size: .78rem; }
+    .availability-box { border-left-color: var(--info); }
     .availability-date {
       display: inline-block;
       background: #edf3ff;
       color: #4169a8;
-      padding: 5px 7px;
+      padding: 5px 8px;
       margin: 4px 3px 0 0;
       border-radius: 7px;
-      font-size: .7rem;
+      font-size: .72rem;
     }
-
-    .available-label { color: var(--success); font-weight: 800; }
-    .unavailable-label { color: var(--danger); font-weight: 800; }
 
     .notice {
       background: var(--info-soft);
       border-left: 3px solid var(--info);
-      padding: 10px 11px;
+      padding: 10px 12px;
       border-radius: 8px;
       color: #45618d;
-      font-size: .76rem;
+      font-size: .78rem;
       margin-top: 10px;
     }
-    .warning-notice { background: var(--warning-soft); border-left-color: #d69b1d; color: #805b14; }
-    .success-notice { background: var(--success-soft); border-left-color: var(--success); color: #236c5a; }
+    .warning-notice { background: var(--orange-soft); border-left-color: var(--orange); color: #805b14; }
+    .success-notice { background: var(--green-soft); border-left-color: var(--green); color: #236c5a; }
 
     .empty {
       color: #8a94a5;
       font-size: .82rem;
-      padding: 18px 8px;
+      padding: 24px 8px;
       text-align: center;
       border: 1px dashed var(--border);
-      border-radius: 10px;
+      border-radius: 12px;
       background: #fbfcfe;
     }
 
     .muted { color: var(--muted); }
-    .text-danger { color: var(--danger); }
-    .text-success { color: var(--success); }
+    .text-danger { color: var(--red); }
+    .text-success { color: var(--green); }
     .hidden { display: none !important; }
 
-    /* COLLAPSIBLE SETUP CONTAINER */
-    .collapsible-content {
-      max-height: 2000px;
-      overflow: hidden;
-      transition: max-height 0.35s ease-in-out, opacity 0.25s ease-in-out;
-      opacity: 1;
-    }
-    .collapsible-content.collapsed {
-      max-height: 0;
-      opacity: 0;
-      padding: 0;
-      margin: 0;
-      pointer-events: none;
-    }
-
-    /* MODAL STYLING */
+    /* MODALS */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -461,53 +401,36 @@
     .modal-backdrop.open { display: flex; }
 
     .modal {
-      width: min(720px, 100%);
-      max-height: 92vh;
+      width: min(700px, 100%);
+      max-height: 90vh;
       overflow-y: auto;
       background: #fff;
-      border: 1px solid rgba(255,255,255,.6);
-      border-radius: 22px;
-      padding: 23px;
+      border-radius: 20px;
+      padding: 24px;
       box-shadow: var(--shadow-lg);
     }
 
-    .modal-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 12px; }
-    .modal-header h2 { margin-bottom: 0; border-bottom: 0; padding-bottom: 0; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .modal-header h2 { margin: 0; border: 0; padding: 0; }
     .modal-header h2::after { display: none; }
 
     .close-modal {
       background: #eef1f6;
       color: #334155;
-      width: 36px;
-      height: 36px;
+      width: 34px; height: 34px;
       border-radius: 50%;
-      font-size: 1.25rem;
-      line-height: 1;
+      font-size: 1.2rem;
     }
-    .close-modal:hover { background: #e3e7ef; }
 
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .full { grid-column: 1 / -1; }
 
-    @media (max-width: 1100px) {
-      .stats-grid { grid-template-columns: repeat(2, 1fr); }
-      .grid { grid-template-columns: 1fr 1fr; }
-      .card.span-2 { grid-column: span 2; }
-    }
-
     @media (max-width: 750px) {
       body { padding: 12px; }
-      .page-header { padding: 16px; gap: 14px; border-radius: 18px; }
-      .brand-logo { width: 78px; height: 78px; border-radius: 15px; }
-      .page-header h1 { font-size: 1.55rem; }
-      .stats-grid, .grid { grid-template-columns: 1fr; }
-      .card.span-2 { grid-column: span 1; }
-      .form-grid { grid-template-columns: 1fr; }
-      .full { grid-column: auto; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
       .booking-toolbar { grid-template-columns: 1fr; }
-      .sales-tabs { grid-template-columns: repeat(2, 1fr); }
-      .booking-header { flex-direction: column; }
-      .btn-group button { min-width: 100px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .page-header { flex-direction: column; text-align: center; }
     }
   </style>
 </head>
@@ -516,139 +439,71 @@
 
 <div class="container">
 
-  <!-- PAGE HEADER -->
+  <!-- BRAND HEADER -->
   <div class="page-header">
     <img 
       class="brand-logo" 
-      src="candid clicks logo.png" 
+      src="candid-clicks-logo.png" 
       alt="Candid Clicks Logo"
-      onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23365cab\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><rect x=\'2\' y=\'2\' width=\'20\' height=\'20\' rx=\'5\'/><path d=\'M7 10l5 5 5-5\'/></svg>'"
+      onerror="this.src='candid clicks logo.png';"
     >
     <div class="header-copy">
-      <div class="eyebrow">Candid Clicks · Camera Rentals</div>
-      <h1>Rental Dashboard</h1>
-      <p>Manage inventory, bookings, payments, availability, and security deposits efficiently.</p>
+      <div class="eyebrow">Candid Clicks · Administration</div>
+      <h1>Camera Rental Dashboard</h1>
+      <p>Manage inventory, verify bookings, track revenue and process security deposits.</p>
     </div>
   </div>
 
-  <!-- DASHBOARD STATS -->
+  <!-- NAVIGATION MENU TABS -->
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="switchTab('overview', this)">📊 Overview</button>
+    <button class="tab-btn" onclick="switchTab('bookings', this)">📋 Bookings & Verification</button>
+    <button class="tab-btn" onclick="switchTab('inventory', this)">📷 Inventory Setup</button>
+    <button class="tab-btn" onclick="switchTab('sales', this)">💰 Sales Tracking</button>
+    <button class="tab-btn" onclick="switchTab('deposits', this)">🛡️ Security Deposits</button>
+    <button class="tab-btn" onclick="switchTab('availability', this)">📅 Availability</button>
+  </div>
+
+  <!-- STATS SUMMARY -->
   <div class="stats-grid">
     <div class="stat-card">
-      <div class="stat-label">Total Units</div>
+      <div class="stat-label">Total Camera Units</div>
       <div class="stat-value" id="statUnits">0</div>
     </div>
-
     <div class="stat-card">
-      <div class="stat-label">Active Bookings</div>
+      <div class="stat-label">Active Rentals</div>
       <div class="stat-value" id="statBookings">0</div>
     </div>
-
     <div class="stat-card">
-      <div class="stat-label">Confirmed Revenue</div>
+      <div class="stat-label">Total Revenue</div>
       <div class="stat-value">₱<span id="statRevenue">0.00</span></div>
     </div>
-
     <div class="stat-card">
-      <div class="stat-label">Refund Tasks</div>
+      <div class="stat-label">Pending Refund Tasks</div>
       <div class="stat-value" id="statRefunds">0</div>
     </div>
   </div>
 
-  <div class="grid">
-
-    <!-- INVENTORY SETUP WITH HIDE/SHOW OPTION -->
+  <!-- ==================== TAB: OVERVIEW ==================== -->
+  <div id="tab-overview" class="tab-panel active">
     <div class="card">
-      <div class="card-header-flex">
-        <h2>Inventory Setup</h2>
-        <button id="toggleSetupBtn" class="btn-small btn-outline" onclick="toggleSetupSection()">
-          Hide Setup
-        </button>
-      </div>
-
-      <div id="setupCollapsible" class="collapsible-content">
-        <form id="invForm">
-          <label>Camera Model & Serial / Tag</label>
-          <input
-            type="text"
-            id="camName"
-            placeholder="e.g. Sony A7IV (Unit A)"
-            required
-          >
-
-          <label>Daily Rate (₱)</label>
-          <input
-            type="number"
-            id="dailyRate"
-            min="0"
-            step="0.01"
-            placeholder="1000"
-            required
-          >
-
-          <label>Multi-Day Daily Rate (₱)</label>
-          <input
-            type="number"
-            id="multiDayRate"
-            min="0"
-            step="0.01"
-            placeholder="e.g. 850"
-            required
-          >
-
-          <label>Security Deposit (₱)</label>
-          <input
-            type="number"
-            id="depositAmt"
-            min="0"
-            step="0.01"
-            placeholder="1000"
-            required
-          >
-
-          <label>Turnaround Buffer (Minutes)</label>
-          <input
-            type="number"
-            id="bufferMins"
-            min="0"
-            value="60"
-          >
-
-          <div class="notice">
-            The Multi-Day Daily Rate is applied for rentals of 4 days or more. 
-            Short-term rentals (1–3 days) default to the standard Daily Rate.
-          </div>
-
-          <button class="btn" type="submit">
-            Add Unit
-          </button>
-        </form>
-
-        <h3>Current Units</h3>
-        <div id="inventoryList"></div>
-      </div>
+      <h2>Recent Bookings</h2>
+      <div id="overviewBookingList"></div>
     </div>
+  </div>
 
-    <!-- BOOKINGS & VERIFICATION -->
-    <div class="card span-2">
+  <!-- ==================== TAB: BOOKINGS ==================== -->
+  <div id="tab-bookings" class="tab-panel">
+    <div class="card">
       <h2>Bookings & Payment Verification</h2>
 
-      <div class="btn-group booking-actions">
-        <button class="btn-small" onclick="openNewBookingModal()">
-          + New Booking
-        </button>
-        <button class="btn-small btn-blue" onclick="render()">
-          Refresh
-        </button>
+      <div class="booking-actions">
+        <button class="btn-small" onclick="openNewBookingModal()">+ New Booking</button>
+        <button class="btn-small btn-blue" onclick="render()">Refresh List</button>
       </div>
 
       <div class="booking-toolbar">
-        <input
-          id="bookingSearch"
-          type="search"
-          placeholder="Search customer, camera, booking..."
-          oninput="renderBookings()"
-        >
-
+        <input id="bookingSearch" type="search" placeholder="Search customer, camera, reference..." oninput="renderBookings()">
         <select id="bookingFilter" onchange="renderBookings()">
           <option value="all">All Bookings</option>
           <option value="pending">Pending Payment</option>
@@ -661,93 +516,101 @@
 
       <div id="bookingList"></div>
     </div>
+  </div>
 
-    <!-- SALES TRACKING -->
+  <!-- ==================== TAB: INVENTORY ==================== -->
+  <div id="tab-inventory" class="tab-panel">
     <div class="card">
-      <h2>Sales Tracking</h2>
+      <h2>Add New Camera Unit</h2>
+      <form id="invForm">
+        <div class="form-grid">
+          <div class="full">
+            <label>Camera Model & Serial / Tag</label>
+            <input type="text" id="camName" placeholder="e.g. Sony A7IV (Unit A)" required>
+          </div>
+          <div>
+            <label>Daily Rate (₱)</label>
+            <input type="number" id="dailyRate" min="0" step="0.01" placeholder="1000" required>
+          </div>
+          <div>
+            <label>Multi-Day Daily Rate (₱)</label>
+            <input type="number" id="multiDayRate" min="0" step="0.01" placeholder="850" required>
+          </div>
+          <div>
+            <label>Security Deposit (₱)</label>
+            <input type="number" id="depositAmt" min="0" step="0.01" placeholder="1000" required>
+          </div>
+          <div>
+            <label>Turnaround Buffer (Minutes)</label>
+            <input type="number" id="bufferMins" min="0" value="60">
+          </div>
+        </div>
+
+        <div class="notice">
+          Rentals lasting 4 days or more automatically apply the Multi-Day Daily Rate. Short-term rentals (1–3 days) use the standard Daily Rate.
+        </div>
+
+        <button class="btn" type="submit">Add Unit To Inventory</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Current Camera Fleet</h2>
+      <div id="inventoryList"></div>
+    </div>
+  </div>
+
+  <!-- ==================== TAB: SALES ==================== -->
+  <div id="tab-sales" class="tab-panel">
+    <div class="card">
+      <h2>Sales & Revenue Tracking</h2>
 
       <div class="sales-tabs">
-        <button
-          class="sales-tab active"
-          data-period="daily"
-          onclick="changeSalesPeriod('daily')"
-        >
-          Daily
-        </button>
-
-        <button
-          class="sales-tab"
-          data-period="weekly"
-          onclick="changeSalesPeriod('weekly')"
-        >
-          Weekly
-        </button>
-
-        <button
-          class="sales-tab"
-          data-period="monthly"
-          onclick="changeSalesPeriod('monthly')"
-        >
-          Monthly
-        </button>
-
-        <button
-          class="sales-tab"
-          data-period="quarterly"
-          onclick="changeSalesPeriod('quarterly')"
-        >
-          Quarterly
-        </button>
-
-        <button
-          class="sales-tab"
-          data-period="yearly"
-          onclick="changeSalesPeriod('yearly')"
-        >
-          Yearly
-        </button>
+        <button class="sales-tab active" data-period="daily" onclick="changeSalesPeriod('daily')">Daily</button>
+        <button class="sales-tab" data-period="weekly" onclick="changeSalesPeriod('weekly')">Weekly</button>
+        <button class="sales-tab" data-period="monthly" onclick="changeSalesPeriod('monthly')">Monthly</button>
+        <button class="sales-tab" data-period="quarterly" onclick="changeSalesPeriod('quarterly')">Quarterly</button>
+        <button class="sales-tab" data-period="yearly" onclick="changeSalesPeriod('yearly')">Yearly</button>
       </div>
 
       <div class="sales-total">
-        <div class="muted" id="salesPeriodLabel">
-          Today's Verified Sales
-        </div>
-        <div class="amount">
-          ₱<span id="confirmedRevenue">0.00</span>
-        </div>
+        <div class="muted" id="salesPeriodLabel">Today's Verified Revenue</div>
+        <div class="amount">₱<span id="confirmedRevenue">0.00</span></div>
       </div>
 
       <div class="sales-breakdown" id="salesBreakdown"></div>
     </div>
+  </div>
 
-    <!-- DEPOSIT TASKS -->
+  <!-- ==================== TAB: DEPOSITS ==================== -->
+  <div id="tab-deposits" class="tab-panel">
     <div class="card">
-      <h2>Deposit Refund Tasks</h2>
+      <h2>Security Deposit Refund Tasks</h2>
 
       <div class="notice warning-notice">
-        Refund tasks become available <strong>1 hour before the booking ends</strong>.
-        The ₱300 reservation fee is treated as part of the ₱1,000 security deposit,
-        leaving ₱700 to be refunded upon clear inspection.
+        Refund tasks become available <strong>1 hour before the rental period ends</strong>.
+        The ₱300 reservation fee is treated as part of the total security deposit.
       </div>
 
-      <h3>Tasks Ready</h3>
+      <h3>Tasks Ready for Action</h3>
       <div id="depositTaskList"></div>
 
-      <h3>Recently Completed</h3>
+      <h3>Recently Refunded</h3>
       <div id="completedDepositTaskList"></div>
     </div>
+  </div>
 
-    <!-- AVAILABILITY PANEL -->
+  <!-- ==================== TAB: AVAILABILITY ==================== -->
+  <div id="tab-availability" class="tab-panel">
     <div class="card">
-      <h2>Camera Availability</h2>
-      <p class="muted" style="font-size:.8rem;">
-        Cameras automatically block out overlapping booking timelines, including configured buffer times.
+      <h2>Camera Unit Schedule & Availability</h2>
+      <p class="muted" style="font-size:.82rem;">
+        Schedules show active reservations including configured turnaround buffer times.
       </p>
-
       <div id="availabilityList"></div>
     </div>
-
   </div>
+
 </div>
 
 <!-- UNIT EDIT MODAL -->
@@ -761,24 +624,29 @@
     <form id="editUnitForm">
       <input type="hidden" id="editUnitId">
 
-      <label>Camera Model & Serial / Tag</label>
+      <label>Camera Model & Tag</label>
       <input id="editCamName" required>
 
-      <label>Daily Rate (₱)</label>
-      <input id="editDailyRate" type="number" min="0" step="0.01" required>
+      <div class="form-grid">
+        <div>
+          <label>Daily Rate (₱)</label>
+          <input id="editDailyRate" type="number" min="0" step="0.01" required>
+        </div>
+        <div>
+          <label>Multi-Day Rate (₱)</label>
+          <input id="editMultiDayRate" type="number" min="0" step="0.01" required>
+        </div>
+        <div>
+          <label>Security Deposit (₱)</label>
+          <input id="editDepositAmt" type="number" min="0" step="0.01" required>
+        </div>
+        <div>
+          <label>Buffer (Minutes)</label>
+          <input id="editBufferMins" type="number" min="0" required>
+        </div>
+      </div>
 
-      <label>Multi-Day Daily Rate (₱)</label>
-      <input id="editMultiDayRate" type="number" min="0" step="0.01" required>
-
-      <label>Security Deposit (₱)</label>
-      <input id="editDepositAmt" type="number" min="0" step="0.01" required>
-
-      <label>Turnaround Buffer (Minutes)</label>
-      <input id="editBufferMins" type="number" min="0" required>
-
-      <button class="btn" type="submit">
-        Save Unit Changes
-      </button>
+      <button class="btn" type="submit">Save Changes</button>
     </form>
   </div>
 </div>
@@ -796,13 +664,13 @@
 
       <div class="form-grid">
         <div>
-          <label>Customer Name</label>
-          <input id="bookingCustomer" required placeholder="Customer name">
+          <label>Customer Full Name</label>
+          <input id="bookingCustomer" required placeholder="e.g. Juan Cruz">
         </div>
 
         <div>
-          <label>Contact Number</label>
-          <input id="bookingContact" required placeholder="09XXXXXXXXX">
+          <label>Contact Email / Phone</label>
+          <input id="bookingContact" required placeholder="juan@email.com / 09171234567">
         </div>
 
         <div class="full">
@@ -825,31 +693,21 @@
 
         <div>
           <label>Reservation Fee (₱)</label>
-          <input
-            id="bookingReservation"
-            type="number"
-            min="0"
-            step="0.01"
-            value="300"
-            onchange="updateBookingPrice()"
-          >
+          <input id="bookingReservation" type="number" min="0" step="0.01" value="300" onchange="updateBookingPrice()">
         </div>
 
         <div>
-          <label>Security Deposit (₱)</label>
+          <label>Total Security Deposit (₱)</label>
           <input id="bookingDeposit" type="number" min="0" step="0.01" readonly>
         </div>
 
         <div class="full">
           <label>Notes</label>
-          <textarea id="bookingNotes" placeholder="Additional rental notes..."></textarea>
+          <textarea id="bookingNotes" placeholder="Additional details..."></textarea>
         </div>
       </div>
 
-      <div id="bookingPricePreview" class="notice success-notice">
-        Select a camera and rental dates to calculate the price.
-      </div>
-
+      <div id="bookingPricePreview" class="notice success-notice">Select rental dates to calculate total amount.</div>
       <div id="bookingConflictMessage" class="notice warning-notice hidden"></div>
 
       <div class="btn-group">
@@ -861,41 +719,23 @@
 </div>
 
 <script>
-  /*
-   * ============================================================
-   * CANDID CLICKS - RENTAL ADMIN SYSTEM
-   * ============================================================
-   */
-
   let inventory = JSON.parse(localStorage.getItem('gear_inv')) || [];
   let bookings = JSON.parse(localStorage.getItem('gear_bookings')) || [];
   let currentSalesPeriod = 'daily';
-  let isSetupCollapsed = false;
 
   /* ============================================================
-     TOGGLE COLLAPSIBLE SECTION
+     TAB NAVIGATION
      ============================================================ */
-  function toggleSetupSection() {
-    const content = document.getElementById('setupCollapsible');
-    const btn = document.getElementById('toggleSetupBtn');
-    
-    isSetupCollapsed = !isSetupCollapsed;
-    
-    if (isSetupCollapsed) {
-      content.classList.add('collapsed');
-      btn.textContent = 'Show Setup';
-      btn.classList.remove('btn-outline');
-      btn.classList.add('btn-blue');
-    } else {
-      content.classList.remove('collapsed');
-      btn.textContent = 'Hide Setup';
-      btn.classList.remove('btn-blue');
-      btn.classList.add('btn-outline');
-    }
+  function switchTab(tabId, element) {
+    document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+    document.getElementById(`tab-${tabId}`).classList.add('active');
+    element.classList.add('active');
   }
 
   /* ============================================================
-     DATA MIGRATION & STORAGE
+     STORAGE & SYNC
      ============================================================ */
   function migrateData() {
     inventory = inventory.map(i => ({
@@ -907,29 +747,24 @@
       buffer: Number(i.buffer || 60)
     }));
 
-    bookings = bookings.map(b => {
-      const reservationFee = Number(b.reservationFee ?? b.reservation ?? 300);
-      const deposit = Number(b.deposit ?? 0);
-
-      return {
-        ...b,
-        id: b.id || Date.now() + Math.random(),
-        customer: b.customer || 'Unknown Customer',
-        contact: b.contact || '',
-        camName: b.camName || '',
-        start: b.start,
-        end: b.end,
-        price: Number(b.price || 0),
-        deposit: deposit,
-        reservationFee: reservationFee,
-        paymentVerified: Boolean(b.paymentVerified),
-        paymentVerifiedAt: b.paymentVerifiedAt || null,
-        depositReturned: Boolean(b.depositReturned),
-        depositRefundCompletedAt: b.depositRefundCompletedAt || null,
-        status: b.status || (b.paymentVerified ? 'Confirmed & Paid' : 'Pending Payment'),
-        notes: b.notes || ''
-      };
-    });
+    bookings = bookings.map(b => ({
+      ...b,
+      id: b.id || Date.now() + Math.random(),
+      customer: b.customer || 'Unknown Customer',
+      contact: b.email || b.contact || '',
+      camName: b.camName || b.camera_name || '',
+      start: b.start,
+      end: b.end,
+      price: Number(b.price || 0),
+      deposit: Number(b.deposit || 0),
+      reservationFee: Number(b.reservationFee ?? 300),
+      paymentVerified: Boolean(b.paymentVerified || b.status === 'Confirmed' || b.status === 'Paid'),
+      paymentVerifiedAt: b.paymentVerifiedAt || null,
+      depositReturned: Boolean(b.depositReturned),
+      depositRefundCompletedAt: b.depositRefundCompletedAt || null,
+      status: b.status || (b.paymentVerified ? 'Confirmed & Paid' : 'Pending Payment'),
+      notes: b.notes || ''
+    }));
 
     saveData();
   }
@@ -944,9 +779,6 @@
     render();
   }
 
-  /* ============================================================
-     CROSS-TAB REALTIME SYNC
-     ============================================================ */
   window.addEventListener('storage', (e) => {
     if (e.key === 'gear_inv' || e.key === 'gear_bookings') {
       inventory = JSON.parse(localStorage.getItem('gear_inv')) || [];
@@ -956,103 +788,57 @@
   });
 
   /* ============================================================
-     HELPERS
+     FORMATTERS & HELPERS
      ============================================================ */
   function money(value) {
     return Number(value || 0).toLocaleString('en-PH', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
+      minimumFractionDigits: 2, maximumFractionDigits: 2
     });
   }
 
   function escapeHTML(value) {
-    return String(value ?? '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
+    return String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
   function formatDate(date) {
     if (!date) return 'N/A';
-    return new Date(date).toLocaleString('en-PH', {
-      dateStyle: 'medium',
-      timeStyle: 'short'
-    });
+    return new Date(date).toLocaleString('en-PH', { dateStyle: 'medium', timeStyle: 'short' });
   }
 
   function toInputDateTime(date) {
     const d = new Date(date);
     const pad = n => String(n).padStart(2, '0');
-    return (
-      d.getFullYear() + '-' +
-      pad(d.getMonth() + 1) + '-' +
-      pad(d.getDate()) + 'T' +
-      pad(d.getHours()) + ':' +
-      pad(d.getMinutes())
-    );
+    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
   }
 
   function getDuration(start, end) {
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-    const milliseconds = endDate.getTime() - startDate.getTime();
-
-    if (milliseconds <= 0) return null;
-
-    const hours = milliseconds / 3600000;
-    const days = Math.ceil(hours / 24);
-
-    return { hours, days };
+    const ms = new Date(end).getTime() - new Date(start).getTime();
+    if (ms <= 0) return null;
+    const hours = ms / 3600000;
+    return { hours, days: Math.ceil(hours / 24) };
   }
 
-  function getUnitById(id) {
-    return inventory.find(i => String(i.id) === String(id));
-  }
+  function getUnitByName(name) { return inventory.find(i => i.name === name); }
 
-  function getUnitByName(name) {
-    return inventory.find(i => i.name === name);
-  }
+  function isBookingCancelled(b) { return String(b.status || '').toLowerCase().includes('cancel'); }
 
   /* ============================================================
-     BOOKING OVERLAP & CONFLICT LOGIC
+     CONFLICT LOGIC
      ============================================================ */
-  function bookingsOverlap(startA, endA, startB, endB) {
-    const aStart = new Date(startA).getTime();
-    const aEnd = new Date(endA).getTime();
-    const bStart = new Date(startB).getTime();
-    const bEnd = new Date(endB).getTime();
-    return (aStart < bEnd && aEnd > bStart);
-  }
-
-  function isBookingCancelled(booking) {
-    return String(booking.status || '').toLowerCase().includes('cancelled');
-  }
-
-  function isBookingBlocking(booking) {
-    return !isBookingCancelled(booking);
-  }
-
-  function getBlockedRange(booking, unit) {
-    const buffer = Number(unit?.buffer || 0) * 60000;
-    return {
-      start: new Date(new Date(booking.start).getTime() - buffer),
-      end: new Date(new Date(booking.end).getTime() + buffer)
-    };
-  }
-
   function hasConflict(cameraName, start, end, excludeBookingId = null) {
     const unit = getUnitByName(cameraName);
     if (!unit) return true;
 
     return bookings.some(b => {
-      if (!isBookingBlocking(b)) return false;
+      if (isBookingCancelled(b)) return false;
       if (excludeBookingId !== null && String(b.id) === String(excludeBookingId)) return false;
       if (b.camName !== cameraName) return false;
 
-      const blocked = getBlockedRange(b, unit);
-      return bookingsOverlap(start, end, blocked.start, blocked.end);
+      const buffer = Number(unit.buffer || 0) * 60000;
+      const bStart = new Date(b.start).getTime() - buffer;
+      const bEnd = new Date(b.end).getTime() + buffer;
+
+      return (new Date(start).getTime() < bEnd && new Date(end).getTime() > bStart);
     });
   }
 
@@ -1061,55 +847,28 @@
     return inventory.filter(unit => !hasConflict(unit.name, start, end, excludeBookingId));
   }
 
-  function getBookingForCamera(cameraName) {
-    return bookings.filter(b => b.camName === cameraName && isBookingBlocking(b));
-  }
-
-  /* ============================================================
-     PRICING CALCULATION
-     ============================================================ */
   function calculateRentalPrice(unit, start, end) {
     if (!unit || !start || !end) return { price: 0, days: 0, hours: 0, rate: 0 };
     const duration = getDuration(start, end);
     if (!duration) return { price: 0, days: 0, hours: 0, rate: 0 };
 
-    const rate = duration.days >= 4
-      ? Number(unit.multiDayRate || unit.daily || 0)
-      : Number(unit.daily || 0);
-
-    return {
-      price: rate * duration.days,
-      days: duration.days,
-      hours: duration.hours,
-      rate
-    };
+    const rate = duration.days >= 4 ? Number(unit.multiDayRate || unit.daily) : Number(unit.daily);
+    return { price: rate * duration.days, days: duration.days, hours: duration.hours, rate };
   }
 
   /* ============================================================
-     INVENTORY MANAGERS
+     INVENTORY FORM
      ============================================================ */
   document.getElementById('invForm').addEventListener('submit', function(e) {
     e.preventDefault();
-
     const name = document.getElementById('camName').value.trim();
     const daily = Number(document.getElementById('dailyRate').value);
     const multiDayRate = Number(document.getElementById('multiDayRate').value);
     const deposit = Number(document.getElementById('depositAmt').value);
     const buffer = Number(document.getElementById('bufferMins').value) || 0;
 
-    if (!name) {
-      alert('Please enter the camera model / unit name.');
-      return;
-    }
-
     if (inventory.some(i => i.name.toLowerCase() === name.toLowerCase())) {
-      alert('A camera unit with this name already exists.');
-      return;
-    }
-
-    if (daily < 0 || multiDayRate < 0 || deposit < 0) {
-      alert('Rates and deposit cannot be negative.');
-      return;
+      alert('Camera name already exists.'); return;
     }
 
     inventory.push({ id: Date.now(), name, daily, multiDayRate, deposit, buffer });
@@ -1119,7 +878,7 @@
   });
 
   function editUnit(id) {
-    const unit = getUnitById(id);
+    const unit = inventory.find(i => String(i.id) === String(id));
     if (!unit) return;
 
     document.getElementById('editUnitId').value = unit.id;
@@ -1134,94 +893,52 @@
 
   document.getElementById('editUnitForm').addEventListener('submit', function(e) {
     e.preventDefault();
-
     const id = document.getElementById('editUnitId').value;
-    const unit = getUnitById(id);
+    const unit = inventory.find(i => String(i.id) === String(id));
     if (!unit) return;
 
-    const name = document.getElementById('editCamName').value.trim();
-    const daily = Number(document.getElementById('editDailyRate').value);
-    const multiDayRate = Number(document.getElementById('editMultiDayRate').value);
-    const deposit = Number(document.getElementById('editDepositAmt').value);
-    const buffer = Number(document.getElementById('editBufferMins').value);
-
-    if (!name) {
-      alert('Camera name cannot be empty.');
-      return;
-    }
-
-    const duplicate = inventory.some(i => String(i.id) !== String(id) && i.name.toLowerCase() === name.toLowerCase());
-    if (duplicate) {
-      alert('Another camera already uses this name.');
-      return;
-    }
-
-    unit.name = name;
-    unit.daily = daily;
-    unit.multiDayRate = multiDayRate;
-    unit.deposit = deposit;
-    unit.buffer = buffer;
+    unit.name = document.getElementById('editCamName').value.trim();
+    unit.daily = Number(document.getElementById('editDailyRate').value);
+    unit.multiDayRate = Number(document.getElementById('editMultiDayRate').value);
+    unit.deposit = Number(document.getElementById('editDepositAmt').value);
+    unit.buffer = Number(document.getElementById('editBufferMins').value);
 
     closeModal('unitModal');
     sync();
   });
 
   function deleteUnit(id) {
-    const unit = getUnitById(id);
+    const unit = inventory.find(i => String(i.id) === String(id));
     if (!unit) return;
 
-    const hasBookings = bookings.some(b => b.camName === unit.name && !isBookingCancelled(b));
-    if (hasBookings) {
-      alert('This unit cannot be deleted because it has active or confirmed bookings. Edit/cancel those bookings first.');
-      return;
+    if (bookings.some(b => b.camName === unit.name && !isBookingCancelled(b))) {
+      alert('Cannot delete a camera with active bookings.'); return;
     }
 
-    if (!confirm(`Delete "${unit.name}" from inventory?`)) return;
-
-    inventory = inventory.filter(i => String(i.id) !== String(id));
-    sync();
+    if (confirm(`Remove ${unit.name}?`)) {
+      inventory = inventory.filter(i => String(i.id) !== String(id));
+      sync();
+    }
   }
 
   function renderInventory() {
     const box = document.getElementById('inventoryList');
+    if (!inventory.length) { box.innerHTML = '<div class="empty">No units added yet.</div>'; return; }
 
-    if (!inventory.length) {
-      box.innerHTML = '<div class="empty">No camera units added yet.</div>';
-      return;
-    }
-
-    box.innerHTML = inventory.map(unit => {
-      const unitBookings = getBookingForCamera(unit.name);
-      const upcoming = unitBookings
-        .filter(b => new Date(b.end) > new Date())
-        .sort((a,b) => new Date(a.start) - new Date(b.start))
-        .slice(0, 3);
-
-      return `
-        <div class="unit-item">
-          <div class="unit-name">${escapeHTML(unit.name)}</div>
-          <div class="unit-meta">
-            Daily: <strong>₱${money(unit.daily)}</strong><br>
-            Multi-Day Daily: <strong>₱${money(unit.multiDayRate)}</strong><br>
-            Security Deposit: <strong>₱${money(unit.deposit)}</strong><br>
-            Buffer: ${unit.buffer} minutes
-          </div>
-
-          <div class="unit-availability">
-            ${upcoming.length
-              ? `<span class="unavailable-label">Upcoming rental:</span>
-                 ${upcoming.map(b => `<br>${formatDate(b.start)} → ${formatDate(b.end)}`).join('')}`
-              : `<span class="available-label">✓ Currently available</span>`
-            }
-          </div>
-
-          <div class="btn-group">
-            <button class="btn-small btn-blue" onclick="editUnit(${JSON.stringify(unit.id)})">Edit</button>
-            <button class="btn-small btn-danger" onclick="deleteUnit(${JSON.stringify(unit.id)})">Delete</button>
-          </div>
+    box.innerHTML = inventory.map(unit => `
+      <div class="unit-item">
+        <div class="unit-name">${escapeHTML(unit.name)}</div>
+        <div class="unit-meta">
+          Daily Rate: <strong>₱${money(unit.daily)}</strong> | 
+          Multi-Day Rate: <strong>₱${money(unit.multiDayRate)}</strong> | 
+          Deposit: <strong>₱${money(unit.deposit)}</strong>
         </div>
-      `;
-    }).join('');
+        <div class="btn-group">
+          <button class="btn-small btn-blue" onclick="editUnit(${JSON.stringify(unit.id)})">Edit</button>
+          <button class="btn-small btn-danger" onclick="deleteUnit(${JSON.stringify(unit.id)})">Delete</button>
+        </div>
+      </div>
+    `).join('');
   }
 
   /* ============================================================
@@ -1234,34 +951,13 @@
     document.getElementById('bookingModalTitle').innerText = 'New Booking';
     document.getElementById('bookingForm').reset();
     document.getElementById('editBookingId').value = '';
-    document.getElementById('bookingReservation').value = 300;
 
     const now = new Date();
-    const later = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-
+    const later = new Date(now.getTime() + 24 * 3600000);
     document.getElementById('bookingStart').value = toInputDateTime(now);
     document.getElementById('bookingEnd').value = toInputDateTime(later);
 
     populateCameraDropdown();
-    updateBookingPrice();
-    openModal('bookingModal');
-  }
-
-  function editBooking(id) {
-    const booking = bookings.find(b => String(b.id) === String(id));
-    if (!booking) return;
-
-    document.getElementById('bookingModalTitle').innerText = 'Edit Booking';
-    document.getElementById('editBookingId').value = booking.id;
-    document.getElementById('bookingCustomer').value = booking.customer || '';
-    document.getElementById('bookingContact').value = booking.contact || '';
-    document.getElementById('bookingStart').value = toInputDateTime(booking.start);
-    document.getElementById('bookingEnd').value = toInputDateTime(booking.end);
-    document.getElementById('bookingReservation').value = Number(booking.reservationFee || 0);
-    document.getElementById('bookingDeposit').value = Number(booking.deposit || 0);
-    document.getElementById('bookingNotes').value = booking.notes || '';
-
-    populateCameraDropdown(booking.camName, booking.id);
     updateBookingPrice();
     openModal('bookingModal');
   }
@@ -1274,11 +970,9 @@
     select.innerHTML = '<option value="">Select camera...</option>';
     let available = getAvailableCameras(start, end, excludeBookingId);
 
-    if (currentCamera) {
-      const currentUnit = getUnitByName(currentCamera);
-      if (currentUnit && !available.some(x => x.name === currentCamera)) {
-        available.unshift(currentUnit);
-      }
+    if (currentCamera && !available.some(x => x.name === currentCamera)) {
+      const u = getUnitByName(currentCamera);
+      if (u) available.unshift(u);
     }
 
     available.forEach(unit => {
@@ -1288,31 +982,6 @@
       if (unit.name === currentCamera) option.selected = true;
       select.appendChild(option);
     });
-
-    if (start && end && !available.length) {
-      select.innerHTML = '<option value="">No cameras available for selected dates</option>';
-    }
-
-    showCameraAvailability(start, end, excludeBookingId);
-  }
-
-  function showCameraAvailability(start, end, excludeBookingId = null) {
-    const message = document.getElementById('cameraAvailabilityMessage');
-    if (!start || !end) {
-      message.classList.add('hidden');
-      return;
-    }
-
-    const available = getAvailableCameras(start, end, excludeBookingId);
-    if (available.length) {
-      message.classList.remove('hidden');
-      message.className = 'notice success-notice';
-      message.innerHTML = `<strong>Available cameras:</strong> ${available.map(u => escapeHTML(u.name)).join(', ')}`;
-    } else {
-      message.classList.remove('hidden');
-      message.className = 'notice warning-notice';
-      message.innerHTML = '<strong>No camera is available for the selected period.</strong>';
-    }
   }
 
   function onBookingDateChanged() {
@@ -1335,49 +1004,28 @@
     conflict.classList.add('hidden');
 
     if (!unit || !start || !end) {
-      preview.innerHTML = 'Select a camera and rental dates to calculate the price.';
-      return;
-    }
-
-    const duration = getDuration(start, end);
-    if (!duration) {
-      preview.className = 'notice warning-notice';
-      preview.innerHTML = '<strong>Invalid dates:</strong> End date/time must be after the start date/time.';
-      return;
+      preview.innerHTML = 'Select rental dates to calculate total amount.'; return;
     }
 
     const calculation = calculateRentalPrice(unit, start, end);
-    const deposit = Number(unit.deposit || 0);
-    const remainingDeposit = Math.max(0, deposit - reservation);
+    document.getElementById('bookingDeposit').value = unit.deposit;
 
-    document.getElementById('bookingDeposit').value = deposit;
-
-    preview.className = 'notice success-notice';
     preview.innerHTML = `
-      <strong>Rental Calculation</strong><br>
-      Duration: ${duration.days} day${duration.days !== 1 ? 's' : ''} (${duration.hours.toFixed(1)} hours)<br>
-      Rate Used: ₱${money(calculation.rate)} / day ${duration.days >= 4 ? '<strong>(Multi-Day Rate)</strong>' : ''}<br>
-      Rental Fee: <strong>₱${money(calculation.price)}</strong><br>
-      Security Deposit: <strong>₱${money(deposit)}</strong><br>
-      Reservation Already Paid: <strong>₱${money(reservation)}</strong><br>
-      Remaining Deposit: <strong>₱${money(remainingDeposit)}</strong>
+      Duration: <strong>${calculation.days} Days</strong> | 
+      Rental Fee: <strong>₱${money(calculation.price)}</strong> | 
+      Security Deposit: <strong>₱${money(unit.deposit)}</strong>
     `;
 
     const bookingId = document.getElementById('editBookingId').value || null;
     if (hasConflict(cameraName, start, end, bookingId)) {
       conflict.classList.remove('hidden');
-      conflict.innerHTML = `
-        <strong>⚠ Camera unavailable.</strong><br>
-        ${escapeHTML(cameraName)} is already rented during, or too close to, the selected period.<br><br>
-        Choose another camera or change the booking dates.
-      `;
+      conflict.innerHTML = `<strong>⚠ Camera is unavailable for these dates.</strong>`;
     }
   }
 
   document.getElementById('bookingForm').addEventListener('submit', function(e) {
     e.preventDefault();
-
-    const bookingId = document.getElementById('editBookingId').value || null;
+    const id = document.getElementById('editBookingId').value || null;
     const customer = document.getElementById('bookingCustomer').value.trim();
     const contact = document.getElementById('bookingContact').value.trim();
     const camera = document.getElementById('bookingCamera').value;
@@ -1387,60 +1035,26 @@
     const notes = document.getElementById('bookingNotes').value.trim();
 
     const unit = getUnitByName(camera);
+    if (!unit) return;
 
-    if (!customer || !camera || !start || !end || !unit) {
-      alert('Please complete all required booking information.');
-      return;
+    if (hasConflict(camera, start, end, id)) {
+      alert('Selected dates conflict with an existing reservation.'); return;
     }
 
-    const duration = getDuration(start, end);
-    if (!duration) {
-      alert('The end date/time must be after the start date/time.');
-      return;
-    }
+    const calc = calculateRentalPrice(unit, start, end);
 
-    if (hasConflict(camera, start, end, bookingId)) {
-      alert('This camera is already rented during the selected period or its turnaround buffer.');
-      return;
-    }
-
-    if (reservation > unit.deposit) {
-      alert(`The reservation fee cannot exceed the security deposit of ₱${money(unit.deposit)}.`);
-      return;
-    }
-
-    const calculation = calculateRentalPrice(unit, start, end);
-
-    if (bookingId) {
-      const booking = bookings.find(b => String(b.id) === String(bookingId));
-      if (!booking) return;
-
-      booking.customer = customer;
-      booking.contact = contact;
-      booking.camName = camera;
-      booking.start = start;
-      booking.end = end;
-      booking.price = calculation.price;
-      booking.deposit = unit.deposit;
-      booking.reservationFee = reservation;
-      booking.notes = notes;
+    if (id) {
+      const b = bookings.find(x => String(x.id) === String(id));
+      if (b) {
+        b.customer = customer; b.contact = contact; b.camName = camera;
+        b.start = start; b.end = end; b.price = calc.price; b.deposit = unit.deposit;
+        b.reservationFee = reservation; b.notes = notes;
+      }
     } else {
       bookings.push({
-        id: Date.now(),
-        customer,
-        contact,
-        camName: camera,
-        start,
-        end,
-        price: calculation.price,
-        deposit: unit.deposit,
-        reservationFee: reservation,
-        paymentVerified: false,
-        paymentVerifiedAt: null,
-        depositReturned: false,
-        depositRefundCompletedAt: null,
-        status: 'Pending Payment',
-        notes
+        id: Date.now(), customer, contact, camName: camera, start, end,
+        price: calc.price, deposit: unit.deposit, reservationFee: reservation,
+        paymentVerified: false, status: 'Pending Payment', notes
       });
     }
 
@@ -1448,399 +1062,201 @@
     sync();
   });
 
-  /* ============================================================
-     BOOKING STATE ACTIONS
-     ============================================================ */
-  function verifyPayment(id) {
+  function editBooking(id) {
     const booking = bookings.find(b => String(b.id) === String(id));
     if (!booking) return;
 
-    if (!confirm(`Confirm that payment has been received for ${booking.customer}?`)) return;
+    document.getElementById('bookingModalTitle').innerText = 'Edit Booking';
+    document.getElementById('editBookingId').value = booking.id;
+    document.getElementById('bookingCustomer').value = booking.customer;
+    document.getElementById('bookingContact').value = booking.contact;
+    document.getElementById('bookingStart').value = toInputDateTime(booking.start);
+    document.getElementById('bookingEnd').value = toInputDateTime(booking.end);
+    document.getElementById('bookingReservation').value = booking.reservationFee;
+    document.getElementById('bookingNotes').value = booking.notes;
 
-    booking.paymentVerified = true;
-    booking.paymentVerifiedAt = new Date().toISOString();
-    booking.status = 'Confirmed & Paid';
-    sync();
+    populateCameraDropdown(booking.camName, booking.id);
+    updateBookingPrice();
+    openModal('bookingModal');
+  }
+
+  function verifyPayment(id) {
+    const b = bookings.find(x => String(x.id) === String(id));
+    if (b && confirm(`Confirm payment verification for ${b.customer}?`)) {
+      b.paymentVerified = true;
+      b.paymentVerifiedAt = new Date().toISOString();
+      b.status = 'Confirmed & Paid';
+      sync();
+    }
   }
 
   function cancelBooking(id) {
-    const booking = bookings.find(b => String(b.id) === String(id));
-    if (!booking) return;
-
-    if (!confirm('Cancel this booking? The time slot will immediately become available again.')) return;
-
-    booking.status = 'Cancelled';
-    booking.paymentVerified = false;
-    sync();
+    const b = bookings.find(x => String(x.id) === String(id));
+    if (b && confirm(`Cancel reservation for ${b.customer}?`)) {
+      b.status = 'Cancelled';
+      b.paymentVerified = false;
+      sync();
+    }
   }
 
   function deleteBooking(id) {
-    const booking = bookings.find(b => String(b.id) === String(id));
-    if (!booking) return;
-
-    if (!isBookingCancelled(booking)) {
-      alert('Only cancelled bookings can be permanently deleted.');
-      return;
+    if (confirm('Permanently delete this cancelled booking record?')) {
+      bookings = bookings.filter(b => String(b.id) !== String(id));
+      sync();
     }
-
-    if (!confirm(`Permanently delete the cancelled booking for ${booking.customer}?`)) return;
-
-    bookings = bookings.filter(b => String(b.id) !== String(id));
-    sync();
   }
 
   function completeBooking(id) {
-    const booking = bookings.find(b => String(b.id) === String(id));
-    if (!booking) return;
-
-    booking.status = 'Completed';
-    sync();
-  }
-
-  function syncGCal(id) {
-    const booking = bookings.find(b => String(b.id) === String(id));
-    if (!booking) return;
-
-    const start = new Date(booking.start).toISOString().replace(/-|:|\.\d\d\d/g, '');
-    const end = new Date(booking.end).toISOString().replace(/-|:|\.\d\d\d/g, '');
-
-    const details = [
-      `Customer: ${booking.customer}`,
-      `Camera: ${booking.camName}`,
-      `Rental Fee: ₱${money(booking.price)}`,
-      `Security Deposit: ₱${money(booking.deposit)}`,
-      `Reservation Paid: ₱${money(booking.reservationFee)}`,
-      `Remaining Deposit: ₱${money(Math.max(0, booking.deposit - booking.reservationFee))}`
-    ].join('\n');
-
-    const url = `https://calendar.google.com/calendar/render?action=TEMPLATE` +
-      `&text=${encodeURIComponent('Rental: ' + booking.camName + ' - ' + booking.customer)}` +
-      `&dates=${start}/${end}` +
-      `&details=${encodeURIComponent(details)}`;
-
-    window.open(url, '_blank');
+    const b = bookings.find(x => String(x.id) === String(id));
+    if (b) { b.status = 'Completed'; sync(); }
   }
 
   /* ============================================================
-     DEPOSIT REFUND LOGIC
+     BOOKING RENDER
      ============================================================ */
-  function refundTaskIsReady(booking) {
-    if (!booking.paymentVerified || booking.depositReturned || isBookingCancelled(booking)) {
-      return false;
-    }
-    const now = Date.now();
-    const end = new Date(booking.end).getTime();
-    return now >= (end - 60 * 60 * 1000);
-  }
+  function renderBookingsList(list, targetElementId) {
+    const box = document.getElementById(targetElementId);
+    if (!list.length) { box.innerHTML = '<div class="empty">No bookings found.</div>'; return; }
 
-  function completeDepositRefund(id) {
-    const booking = bookings.find(b => String(b.id) === String(id));
-    if (!booking) return;
+    box.innerHTML = list.map(b => {
+      const remainingDeposit = Math.max(0, Number(b.deposit || 0) - Number(b.reservationFee || 0));
+      const cancelled = isBookingCancelled(b);
+      const isPast = new Date(b.end) < new Date();
 
-    if (!refundTaskIsReady(booking)) {
-      alert('This deposit refund task is not ready yet. It becomes available one hour before the booking ends.');
-      return;
-    }
-
-    const remainingDeposit = Math.max(0, Number(booking.deposit || 0) - Number(booking.reservationFee || 0));
-
-    if (!confirm(`Mark the deposit refund as completed?\n\nCustomer: ${booking.customer}\nRefund amount: ₱${money(remainingDeposit)}`)) {
-      return;
-    }
-
-    booking.depositReturned = true;
-    booking.depositRefundCompletedAt = new Date().toISOString();
-    sync();
-  }
-
-  function renderDepositTasks() {
-    const activeBox = document.getElementById('depositTaskList');
-    const completedBox = document.getElementById('completedDepositTaskList');
-
-    const eligible = bookings.filter(b => b.paymentVerified && !isBookingCancelled(b));
-    const active = eligible.filter(b => !b.depositReturned && refundTaskIsReady(b));
-
-    if (!active.length) {
-      activeBox.innerHTML = '<div class="empty">No deposit refund tasks are currently ready.</div>';
-    } else {
-      activeBox.innerHTML = active.map(b => {
-        const remaining = Math.max(0, Number(b.deposit || 0) - Number(b.reservationFee || 0));
-        const overdue = new Date(b.end) < new Date();
-
-        return `
-          <div class="deposit-task ${overdue ? 'overdue' : 'ready'}">
-            <strong>${escapeHTML(b.customer)}</strong><br>
-            <span class="muted">${escapeHTML(b.camName)}</span>
-            <div class="task-time">
-              Booking ends: ${formatDate(b.end)}<br>
-              Refund amount: <strong>₱${money(remaining)}</strong>
+      return `
+        <div class="booking-item ${b.paymentVerified ? 'verified' : ''} ${cancelled ? 'cancelled' : ''}">
+          <div class="booking-header">
+            <div>
+              <div class="booking-customer">${escapeHTML(b.customer)}</div>
+              <div class="booking-camera">${escapeHTML(b.camName)}</div>
             </div>
-            <button class="btn-small" style="margin-top:8px;" onclick="completeDepositRefund(${JSON.stringify(b.id)})">
-              ✓ Complete Refund Task
-            </button>
+            <span class="status-badge ${b.paymentVerified ? 'status-confirmed' : (cancelled ? 'status-cancelled' : 'status-pending')}">
+              ${escapeHTML(b.status)}
+            </span>
           </div>
-        `;
-      }).join('');
-    }
 
-    const completed = eligible
-      .filter(b => b.depositReturned)
-      .sort((a,b) => new Date(b.depositRefundCompletedAt || 0) - new Date(a.depositRefundCompletedAt || 0))
-      .slice(0, 10);
-
-    if (!completed.length) {
-      completedBox.innerHTML = '<div class="empty">No completed refund tasks yet.</div>';
-    } else {
-      completedBox.innerHTML = completed.map(b => {
-        const refund = Math.max(0, Number(b.deposit || 0) - Number(b.reservationFee || 0));
-        return `
-          <div class="deposit-task deposit-completed">
-            <strong>✓ ${escapeHTML(b.customer)}</strong><br>
-            <span class="muted">${escapeHTML(b.camName)}</span>
-            <div class="task-time">
-              Refunded: ₱${money(refund)}<br>
-              Completed: ${formatDate(b.depositRefundCompletedAt)}
-            </div>
+          <div class="booking-details">
+            Rental Period: <strong>${formatDate(b.start)} → ${formatDate(b.end)}</strong><br>
+            Contact: ${escapeHTML(b.contact || 'None')}
           </div>
-        `;
-      }).join('');
-    }
-  }
 
-  /* ============================================================
-     SALES METRICS & PERIODS
-     ============================================================ */
-  function startOfDay(d) { const x = new Date(d); x.setHours(0,0,0,0); return x; }
-  function startOfWeek(d) {
-    const x = startOfDay(d);
-    const day = x.getDay();
-    x.setDate(x.getDate() + (day === 0 ? -6 : 1 - day));
-    return x;
-  }
-  function startOfMonth(d) { const x = startOfDay(d); x.setDate(1); return x; }
-  function startOfQuarter(d) {
-    const x = startOfMonth(d);
-    x.setMonth(Math.floor(x.getMonth() / 3) * 3);
-    return x;
-  }
-  function startOfYear(d) { const x = startOfDay(d); x.setMonth(0); x.setDate(1); return x; }
+          <div class="booking-financial">
+            Rental Fee: <strong>₱${money(b.price)}</strong> | 
+            Paid Deposit: <strong>₱${money(b.reservationFee)}</strong> | 
+            Remaining Deposit Due: <strong>₱${money(remainingDeposit)}</strong>
+          </div>
 
-  function getSalesStart(period) {
-    const now = new Date();
-    if (period === 'weekly') return startOfWeek(now);
-    if (period === 'monthly') return startOfMonth(now);
-    if (period === 'quarterly') return startOfQuarter(now);
-    if (period === 'yearly') return startOfYear(now);
-    return startOfDay(now);
-  }
-
-  function getSalesEnd(period) {
-    const start = getSalesStart(period);
-    const end = new Date(start);
-    if (period === 'daily') end.setDate(end.getDate() + 1);
-    if (period === 'weekly') end.setDate(end.getDate() + 7);
-    if (period === 'monthly') end.setMonth(end.getMonth() + 1);
-    if (period === 'quarterly') end.setMonth(end.getMonth() + 3);
-    if (period === 'yearly') end.setFullYear(end.getFullYear() + 1);
-    return end;
-  }
-
-  function getSalesBookings() {
-    const start = getSalesStart(currentSalesPeriod);
-    const end = getSalesEnd(currentSalesPeriod);
-
-    return bookings.filter(b => {
-      if (!b.paymentVerified || isBookingCancelled(b)) return false;
-      const salesDate = new Date(b.paymentVerifiedAt || b.start);
-      return (salesDate >= start && salesDate < end);
-    });
-  }
-
-  function changeSalesPeriod(period) {
-    currentSalesPeriod = period;
-    document.querySelectorAll('.sales-tab').forEach(b => {
-      b.classList.toggle('active', b.dataset.period === period);
-    });
-    renderSales();
-  }
-
-  function renderSales() {
-    const salesBookings = getSalesBookings();
-    const total = salesBookings.reduce((sum,b) => sum + Number(b.price || 0), 0);
-
-    const labels = {
-      daily: "Today's Verified Sales",
-      weekly: "This Week's Verified Sales",
-      monthly: "This Month's Verified Sales",
-      quarterly: "This Quarter's Verified Sales",
-      yearly: "This Year's Verified Sales"
-    };
-
-    document.getElementById('salesPeriodLabel').innerText = labels[currentSalesPeriod];
-    document.getElementById('confirmedRevenue').innerText = money(total);
-
-    const breakdown = document.getElementById('salesBreakdown');
-    if (!salesBookings.length) {
-      breakdown.innerHTML = 'No verified sales for this period.';
-      return;
-    }
-
-    const byCamera = {};
-    salesBookings.forEach(b => {
-      byCamera[b.camName] = (byCamera[b.camName] || 0) + Number(b.price || 0);
-    });
-
-    breakdown.innerHTML = `
-      <strong>${salesBookings.length} verified booking${salesBookings.length !== 1 ? 's' : ''}</strong><br><br>
-      ${Object.entries(byCamera).map(([camera, amount]) => `
-        ${escapeHTML(camera)}: <strong>₱${money(amount)}</strong><br>
-      `).join('')}
-    `;
-  }
-
-  /* ============================================================
-     BOOKING LIST RENDER
-     ============================================================ */
-  function getBookingStatusClass(booking) {
-    if (isBookingCancelled(booking)) return 'status-cancelled';
-    if (booking.status === 'Confirmed & Paid') return 'status-confirmed';
-    return 'status-pending';
+          <div class="btn-group">
+            ${!cancelled && !b.paymentVerified ? `<button class="btn-small" onclick="verifyPayment(${JSON.stringify(b.id)})">Confirm Payment</button>` : ''}
+            ${!cancelled ? `<button class="btn-small btn-blue" onclick="editBooking(${JSON.stringify(b.id)})">Edit</button>` : ''}
+            ${!cancelled && !isPast ? `<button class="btn-small btn-danger" onclick="cancelBooking(${JSON.stringify(b.id)})">Cancel</button>` : ''}
+            ${cancelled ? `<button class="btn-small btn-danger" onclick="deleteBooking(${JSON.stringify(b.id)})">Delete</button>` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
   }
 
   function renderBookings() {
-    const box = document.getElementById('bookingList');
     const search = (document.getElementById('bookingSearch').value || '').toLowerCase();
     const filter = document.getElementById('bookingFilter').value;
 
     let filtered = [...bookings];
 
     if (search) {
-      filtered = filtered.filter(b =>
-        [b.customer, b.contact, b.camName, b.status, b.notes].join(' ').toLowerCase().includes(search)
-      );
+      filtered = filtered.filter(b => [b.customer, b.contact, b.camName, b.status].join(' ').toLowerCase().includes(search));
     }
 
     if (filter !== 'all') {
       filtered = filtered.filter(b => {
-        if (filter === 'pending') return (!b.paymentVerified && !isBookingCancelled(b));
-        if (filter === 'confirmed') return (b.paymentVerified && b.status === 'Confirmed & Paid');
+        if (filter === 'pending') return !b.paymentVerified && !isBookingCancelled(b);
+        if (filter === 'confirmed') return b.paymentVerified && b.status === 'Confirmed & Paid';
         if (filter === 'cancelled') return isBookingCancelled(b);
-        if (filter === 'completed') return (b.status === 'Completed');
-        if (filter === 'active') {
-          const now = new Date();
-          return (b.paymentVerified && !isBookingCancelled(b) && new Date(b.start) <= now && new Date(b.end) >= now);
-        }
+        if (filter === 'completed') return b.status === 'Completed';
         return true;
       });
     }
 
     filtered.sort((a,b) => new Date(b.start) - new Date(a.start));
-
-    if (!filtered.length) {
-      box.innerHTML = '<div class="empty">No bookings found.</div>';
-      return;
-    }
-
-    box.innerHTML = filtered.map(b => {
-      const remainingDeposit = Math.max(0, Number(b.deposit || 0) - Number(b.reservationFee || 0));
-      const statusClass = getBookingStatusClass(b);
-      const cancelled = isBookingCancelled(b);
-      const isPast = new Date(b.end) < new Date();
-
-      return `
-        <div class="booking-item ${b.paymentVerified ? 'verified' : ''} ${cancelled ? 'cancelled' : ''} ${b.status === 'Completed' ? 'completed' : ''}">
-          <div class="booking-header">
-            <div>
-              <div class="booking-customer">${escapeHTML(b.customer)}</div>
-              <div class="booking-camera">${escapeHTML(b.camName)}</div>
-            </div>
-            <span class="status-badge ${statusClass}">${escapeHTML(b.status)}</span>
-          </div>
-
-          <div class="booking-details">
-            <strong>Rental Period:</strong> ${formatDate(b.start)} → ${formatDate(b.end)}<br>
-            <strong>Contact:</strong> ${escapeHTML(b.contact || 'Not provided')}
-            ${b.notes ? `<br><strong>Notes:</strong> ${escapeHTML(b.notes)}` : ''}
-          </div>
-
-          <div class="booking-financial">
-            Rental Fee: <strong>₱${money(b.price)}</strong><br>
-            Security Deposit: <strong>₱${money(b.deposit)}</strong><br>
-            Reservation Paid: <strong>₱${money(b.reservationFee)}</strong><br>
-            Remaining Deposit: <strong>₱${money(remainingDeposit)}</strong>
-            ${b.depositReturned ? `<br><span class="text-success">✓ Deposit refund completed</span>` : ''}
-          </div>
-
-          <div class="btn-group">
-            ${!cancelled && !b.paymentVerified ? `<button class="btn-small" onclick="verifyPayment(${JSON.stringify(b.id)})">Confirm Payment</button>` : ''}
-            ${!cancelled ? `<button class="btn-small btn-blue" onclick="editBooking(${JSON.stringify(b.id)})">Edit Booking</button>` : ''}
-            ${!cancelled && !isPast ? `<button class="btn-small btn-danger" onclick="cancelBooking(${JSON.stringify(b.id)})">Cancel Booking</button>` : ''}
-            ${b.paymentVerified && isPast && b.status !== 'Completed' ? `<button class="btn-small btn-purple" onclick="completeBooking(${JSON.stringify(b.id)})">Mark Completed</button>` : ''}
-            ${cancelled ? `<button class="btn-small btn-danger" onclick="deleteBooking(${JSON.stringify(b.id)})" title="Permanently delete this cancelled booking">Delete Cancelled</button>` : ''}
-            ${!cancelled ? `<button class="btn-small btn-gray" onclick="syncGCal(${JSON.stringify(b.id)})">Export GCal</button>` : ''}
-          </div>
-        </div>
-      `;
-    }).join('');
+    renderBookingsList(filtered, 'bookingList');
+    renderBookingsList(bookings.slice(0, 5), 'overviewBookingList');
   }
 
   /* ============================================================
-     AVAILABILITY RENDER
+     REFUNDS & SALES
      ============================================================ */
+  function refundTaskIsReady(b) {
+    if (!b.paymentVerified || b.depositReturned || isBookingCancelled(b)) return false;
+    return Date.now() >= (new Date(b.end).getTime() - 3600000);
+  }
+
+  function completeDepositRefund(id) {
+    const b = bookings.find(x => String(x.id) === String(id));
+    if (b && confirm(`Mark deposit refund completed for ${b.customer}?`)) {
+      b.depositReturned = true;
+      b.depositRefundCompletedAt = new Date().toISOString();
+      sync();
+    }
+  }
+
+  function renderDepositTasks() {
+    const activeBox = document.getElementById('depositTaskList');
+    const completedBox = document.getElementById('completedDepositTaskList');
+
+    const active = bookings.filter(b => refundTaskIsReady(b));
+    const completed = bookings.filter(b => b.depositReturned);
+
+    activeBox.innerHTML = !active.length ? '<div class="empty">No tasks ready.</div>' : active.map(b => `
+      <div class="deposit-task ready">
+        <strong>${escapeHTML(b.customer)}</strong> (${escapeHTML(b.camName)})<br>
+        Ends: ${formatDate(b.end)}
+        <button class="btn-small" style="margin-top:8px;" onclick="completeDepositRefund(${JSON.stringify(b.id)})">Mark Refunded</button>
+      </div>
+    `).join('');
+
+    completedBox.innerHTML = !completed.length ? '<div class="empty">No completed refunds yet.</div>' : completed.map(b => `
+      <div class="deposit-task deposit-completed">
+        ✓ <strong>${escapeHTML(b.customer)}</strong> - Refunded on ${formatDate(b.depositRefundCompletedAt)}
+      </div>
+    `).join('');
+  }
+
+  function changeSalesPeriod(period) {
+    currentSalesPeriod = period;
+    document.querySelectorAll('.sales-tab').forEach(b => b.classList.toggle('active', b.dataset.period === period));
+    renderSales();
+  }
+
+  function renderSales() {
+    const total = bookings
+      .filter(b => b.paymentVerified && !isBookingCancelled(b))
+      .reduce((sum, b) => sum + Number(b.price || 0), 0);
+
+    document.getElementById('confirmedRevenue').innerText = money(total);
+  }
+
   function renderAvailability() {
     const box = document.getElementById('availabilityList');
-    if (!inventory.length) {
-      box.innerHTML = '<div class="empty">No cameras in inventory.</div>';
-      return;
-    }
-
-    const now = new Date();
+    if (!inventory.length) { box.innerHTML = '<div class="empty">No units available.</div>'; return; }
 
     box.innerHTML = inventory.map(unit => {
-      const upcoming = bookings
-        .filter(b => b.camName === unit.name && isBookingBlocking(b) && new Date(b.end) > now)
-        .sort((a,b) => new Date(a.start) - new Date(b.start))
-        .slice(0,5);
-
+      const upcoming = bookings.filter(b => b.camName === unit.name && !isBookingCancelled(b));
       return `
         <div class="availability-box">
           <strong>${escapeHTML(unit.name)}</strong><br>
-          ${upcoming.length
-            ? `<span class="unavailable-label">Not available during:</span><br>
-               ${upcoming.map(b => `<span class="availability-date">${formatDate(b.start)} → ${formatDate(b.end)}</span>`).join('')}`
-            : `<span class="available-label">✓ No upcoming rentals</span>`
-          }
+          ${upcoming.length ? upcoming.map(b => `<span class="availability-date">${formatDate(b.start)} → ${formatDate(b.end)}</span>`).join('') : '<span class="text-success">Available</span>'}
         </div>
       `;
     }).join('');
   }
 
-  /* ============================================================
-     STATS RENDER
-     ============================================================ */
   function renderStats() {
-    const now = new Date();
-    const activeBookings = bookings.filter(b =>
-      b.paymentVerified && !isBookingCancelled(b) && new Date(b.start) <= now && new Date(b.end) >= now
-    ).length;
-
-    const revenue = bookings
-      .filter(b => b.paymentVerified && !isBookingCancelled(b))
-      .reduce((sum,b) => sum + Number(b.price || 0), 0);
-
-    const refunds = bookings.filter(b =>
-      b.paymentVerified && !b.depositReturned && !isBookingCancelled(b) && refundTaskIsReady(b)
-    ).length;
-
     document.getElementById('statUnits').innerText = inventory.length;
-    document.getElementById('statBookings').innerText = activeBookings;
-    document.getElementById('statRevenue').innerText = money(revenue);
-    document.getElementById('statRefunds').innerText = refunds;
+    document.getElementById('statBookings').innerText = bookings.filter(b => b.paymentVerified && !isBookingCancelled(b)).length;
+    document.getElementById('statRevenue').innerText = money(bookings.filter(b => b.paymentVerified).reduce((s,b) => s + Number(b.price || 0), 0));
+    document.getElementById('statRefunds').innerText = bookings.filter(b => refundTaskIsReady(b)).length;
   }
 
-  /* ============================================================
-     MAIN RENDER DISPATCH
-     ============================================================ */
   function render() {
     renderInventory();
     renderBookings();
@@ -1849,20 +1265,6 @@
     renderAvailability();
     renderStats();
   }
-
-  /* ============================================================
-     EVENT LISTENERS & INTERVALS
-     ============================================================ */
-  document.querySelectorAll('.modal-backdrop').forEach(modal => {
-    modal.addEventListener('click', function(e) {
-      if (e.target === modal) modal.classList.remove('open');
-    });
-  });
-
-  setInterval(function() {
-    renderDepositTasks();
-    renderStats();
-  }, 30000);
 
   /* ============================================================
      INIT
