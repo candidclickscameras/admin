@@ -113,7 +113,7 @@
       font-weight: 600;
     }
 
-    /* BRAND HEADER - LEFT ALIGNED & CLOSER TOGETHER */
+    /* BRAND HEADER */
     .page-header {
       display: flex;
       align-items: center;
@@ -217,6 +217,7 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 16px;
+      margin-bottom: 20px;
     }
 
     .stat-card {
@@ -227,11 +228,13 @@
       box-shadow: var(--shadow);
       position: relative;
       overflow: hidden;
+      cursor: pointer;
       transition: transform .15s ease, box-shadow .15s ease;
     }
-    .stat-card:hover {
+    .stat-card:hover, .stat-card.active-stat {
       transform: translateY(-2px);
       box-shadow: var(--shadow-lg);
+      border-color: var(--brand);
     }
 
     .stat-card::before {
@@ -432,6 +435,15 @@
     }
     .booking-financial strong { color: var(--navy); }
 
+    .ref-highlight {
+      background: #eef3fb;
+      padding: 3px 6px;
+      border-radius: 4px;
+      font-family: var(--font-title);
+      font-size: .78rem;
+      color: var(--brand-dark);
+    }
+
     .deposit-task.ready { border-left-color: var(--green); }
     .deposit-task.overdue { border-left-color: var(--red); }
     .deposit-completed { border-left-color: var(--green); opacity: .85; }
@@ -464,15 +476,30 @@
       margin-top: 4px;
     }
 
-    .availability-box { border-left-color: var(--info); }
-    .availability-date {
-      display: inline-block;
-      background: #edf3ff;
-      color: #4169a8;
-      padding: 5px 9px;
-      margin: 4px 4px 0 0;
-      border-radius: 8px;
-      font-size: .74rem;
+    /* SCHEDULE & AVAILABILITY TABLE */
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: .82rem;
+    }
+
+    .schedule-table th, .schedule-table td {
+      padding: 12px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .schedule-table th {
+      background: #f1f5f9;
+      color: var(--navy);
+      font-weight: 700;
+      font-family: var(--font-title);
+      font-size: .76rem;
+    }
+
+    .schedule-table tr:hover td {
+      background: #f8fafc;
     }
 
     .notice {
@@ -549,6 +576,7 @@
       .page-header { flex-direction: column; text-align: left; align-items: flex-start; gap: 12px; padding: 18px; }
       .brand-logo { width: 120px; height: auto; }
       .logout-btn { margin-left: 0; margin-top: 6px; }
+      .schedule-table { display: block; overflow-x: auto; }
     }
   </style>
 </head>
@@ -577,7 +605,7 @@
 
 <div class="container">
 
-  <!-- BRAND HEADER - CLOSE & LEFT ALIGNED -->
+  <!-- BRAND HEADER -->
   <div class="page-header">
     <img 
       class="brand-logo" 
@@ -605,24 +633,30 @@
 
   <!-- ==================== TAB: OVERVIEW ==================== -->
   <div id="tab-overview" class="tab-panel active">
-    <!-- STATS SUMMARY ONLY -->
+    <!-- STATS SUMMARY CARDS (CLICKABLE FOR DYNAMIC OVERVIEW) -->
     <div class="stats-grid">
-      <div class="stat-card">
+      <div class="stat-card active-stat" id="statCardUnits" onclick="setOverviewCategory('units')">
         <div class="stat-label">Total Camera Units</div>
         <div class="stat-value" id="statUnits">0</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card" id="statCardRentals" onclick="setOverviewCategory('rentals')">
         <div class="stat-label">Active Rentals</div>
         <div class="stat-value" id="statBookings">0</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card" id="statCardRevenue" onclick="setOverviewCategory('revenue')">
         <div class="stat-label">Total Revenue</div>
         <div class="stat-value">₱<span id="statRevenue">0.00</span></div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card" id="statCardRefunds" onclick="setOverviewCategory('refunds')">
         <div class="stat-label">Pending Refund Tasks</div>
         <div class="stat-value" id="statRefunds">0</div>
       </div>
+    </div>
+
+    <!-- DYNAMIC OVERVIEW SUMMARY PANEL -->
+    <div class="card" id="overviewDynamicPanel">
+      <h2 id="overviewPanelTitle">Total Camera Units Breakdown</h2>
+      <div id="overviewPanelContent"></div>
     </div>
   </div>
 
@@ -639,7 +673,7 @@
 
       <!-- Search & Filter bar with distinct spacing -->
       <div class="booking-toolbar">
-        <input id="bookingSearch" type="search" placeholder="Search customer, camera, status..." oninput="renderBookings()">
+        <input id="bookingSearch" type="search" placeholder="Search customer, camera, ref number..." oninput="renderBookings()">
         <select id="bookingFilter" onchange="renderBookings()">
           <option value="all">All Bookings</option>
           <option value="pending">Pending Payment</option>
@@ -725,7 +759,7 @@
 
       <div class="notice warning-notice">
         Refund tasks become available <strong>1 hour before the rental period ends</strong>.
-        The ₱300 reservation fee is treated as part of the total security deposit.
+        The full security deposit (<strong>₱1,000.00</strong>) is returned upon clear inspection, which incorporates the ₱300 reservation fee previously paid.
       </div>
 
       <h3>Tasks Ready for Action</h3>
@@ -838,6 +872,11 @@
         </div>
 
         <div class="full">
+          <label>Customer Payment Ref Number</label>
+          <input id="bookingPaymentRefNumber" placeholder="e.g. GCash Ref / Bank Trans # 12345678">
+        </div>
+
+        <div class="full">
           <label>Notes</label>
           <textarea id="bookingNotes" placeholder="Additional details..."></textarea>
         </div>
@@ -900,6 +939,7 @@
   let inventory = JSON.parse(localStorage.getItem('gear_inv')) || [];
   let bookings = JSON.parse(localStorage.getItem('gear_bookings')) || [];
   let currentSalesPeriod = 'daily';
+  let activeOverviewCategory = 'units';
 
   /* ============================================================
      TAB NAVIGATION
@@ -936,6 +976,8 @@
       price: Number(b.price || 0),
       deposit: Number(b.deposit || 0),
       reservationFee: Number(b.reservationFee ?? 300),
+      paymentRefNumber: b.paymentRefNumber || b.userPaymentRef || '',
+      reference: b.reference || ('CC-' + Date.now().toString().slice(-8)),
       paymentVerified: Boolean(b.paymentVerified || b.status === 'Confirmed' || b.status === 'Paid'),
       paymentVerifiedAt: b.paymentVerifiedAt || null,
       depositReturned: Boolean(b.depositReturned),
@@ -1210,6 +1252,7 @@
     const start = document.getElementById('bookingStart').value;
     const end = document.getElementById('bookingEnd').value;
     const reservation = Number(document.getElementById('bookingReservation').value) || 0;
+    const paymentRef = document.getElementById('bookingPaymentRefNumber').value.trim();
     const notes = document.getElementById('bookingNotes').value.trim();
 
     const unit = getUnitByName(camera);
@@ -1226,13 +1269,17 @@
       if (b) {
         b.customer = customer; b.contact = contact; b.camName = camera;
         b.start = start; b.end = end; b.price = calc.price; b.deposit = unit.deposit;
-        b.reservationFee = reservation; b.notes = notes;
+        b.reservationFee = reservation; b.paymentRefNumber = paymentRef; b.notes = notes;
       }
     } else {
+      const now = new Date();
+      const dateStr = now.getFullYear() + String(now.getMonth() + 1).padStart(2, "0") + String(now.getDate()).padStart(2, "0");
+      const random = Math.floor(1000 + Math.random() * 9000);
+      
       bookings.push({
-        id: Date.now(), customer, contact, camName: camera, start, end,
+        id: Date.now(), reference: `CC-${dateStr}-${random}`, customer, contact, camName: camera, start, end,
         price: calc.price, deposit: unit.deposit, reservationFee: reservation,
-        paymentVerified: false, status: 'Pending Payment', notes
+        paymentRefNumber: paymentRef, paymentVerified: false, status: 'Pending Payment', notes
       });
     }
 
@@ -1251,6 +1298,7 @@
     document.getElementById('bookingStart').value = toInputDateTime(booking.start);
     document.getElementById('bookingEnd').value = toInputDateTime(booking.end);
     document.getElementById('bookingReservation').value = booking.reservationFee;
+    document.getElementById('bookingPaymentRefNumber').value = booking.paymentRefNumber || '';
     document.getElementById('bookingNotes').value = booking.notes;
 
     populateCameraDropdown(booking.camName, booking.id);
@@ -1297,7 +1345,9 @@
     if (!list.length) { box.innerHTML = '<div class="empty">No bookings found.</div>'; return; }
 
     box.innerHTML = list.map(b => {
-      const remainingDeposit = Math.max(0, Number(b.deposit || 0) - Number(b.reservationFee || 0));
+      const totalDeposit = Number(b.deposit || 0);
+      const paidReservationFee = Number(b.reservationFee || 0);
+      const remainingDeposit = Math.max(0, totalDeposit - paidReservationFee);
       const cancelled = isBookingCancelled(b);
       const isPast = new Date(b.end) < new Date();
 
@@ -1314,14 +1364,17 @@
           </div>
 
           <div class="booking-details">
+            System Ref: <span class="ref-highlight">${escapeHTML(b.reference || 'N/A')}</span> | 
+            Client Payment Ref: <span class="ref-highlight">${escapeHTML(b.paymentRefNumber || 'Pending Submission')}</span><br>
             Rental Period: <strong>${formatDate(b.start)} → ${formatDate(b.end)}</strong><br>
             Contact: ${escapeHTML(b.contact || 'None')}
           </div>
 
           <div class="booking-financial">
             Rental Fee: <strong>₱${money(b.price)}</strong> | 
-            Paid Deposit: <strong>₱${money(b.reservationFee)}</strong> | 
-            Remaining Deposit Due: <strong>₱${money(remainingDeposit)}</strong>
+            Total Security Deposit: <strong>₱${money(totalDeposit)}</strong><br>
+            • Reservation Fee Paid: <strong>₱${money(paidReservationFee)}</strong> | 
+            • Remaining Deposit Due: <strong>₱${money(remainingDeposit)}</strong>
           </div>
 
           <div class="btn-group">
@@ -1342,7 +1395,9 @@
     let filtered = [...bookings];
 
     if (search) {
-      filtered = filtered.filter(b => [b.customer, b.contact, b.camName, b.status].join(' ').toLowerCase().includes(search));
+      filtered = filtered.filter(b => [
+        b.customer, b.contact, b.camName, b.status, b.reference, b.paymentRefNumber
+      ].join(' ').toLowerCase().includes(search));
     }
 
     if (filter !== 'all') {
@@ -1360,6 +1415,71 @@
   }
 
   /* ============================================================
+     OVERVIEW DYNAMIC PANEL
+     ============================================================ */
+  function setOverviewCategory(category) {
+    activeOverviewCategory = category;
+
+    document.querySelectorAll('.stat-card').forEach(card => card.classList.remove('active-stat'));
+    
+    if (category === 'units') document.getElementById('statCardUnits').classList.add('active-stat');
+    if (category === 'rentals') document.getElementById('statCardRentals').classList.add('active-stat');
+    if (category === 'revenue') document.getElementById('statCardRevenue').classList.add('active-stat');
+    if (category === 'refunds') document.getElementById('statCardRefunds').classList.add('active-stat');
+
+    renderOverviewDynamicPanel();
+  }
+
+  function renderOverviewDynamicPanel() {
+    const titleEl = document.getElementById('overviewPanelTitle');
+    const contentEl = document.getElementById('overviewPanelContent');
+    const now = new Date();
+
+    if (activeOverviewCategory === 'units') {
+      titleEl.innerText = 'Total Camera Units Overview';
+      if (!inventory.length) {
+        contentEl.innerHTML = '<div class="empty">No camera units configured in inventory.</div>';
+      } else {
+        contentEl.innerHTML = inventory.map(unit => `
+          <div class="unit-item">
+            <div class="unit-name">${escapeHTML(unit.name)}</div>
+            <div class="unit-meta">
+              Daily Rate: <strong>₱${money(unit.daily)}</strong> | 
+              Multi-Day Rate: <strong>₱${money(unit.multiDayRate)}</strong> | 
+              Security Deposit: <strong>₱${money(unit.deposit)}</strong>
+            </div>
+          </div>
+        `).join('');
+      }
+    } else if (activeOverviewCategory === 'rentals') {
+      titleEl.innerText = 'Active Rentals Overview';
+      const activeList = bookings.filter(b => b.paymentVerified && !isBookingCancelled(b) && new Date(b.start) <= now && new Date(b.end) >= now);
+      renderBookingsList(activeList, 'overviewPanelContent');
+    } else if (activeOverviewCategory === 'revenue') {
+      titleEl.innerText = 'Verified Revenue Overview';
+      const paidList = bookings.filter(b => b.paymentVerified && !isBookingCancelled(b));
+      renderBookingsList(paidList, 'overviewPanelContent');
+    } else if (activeOverviewCategory === 'refunds') {
+      titleEl.innerText = 'Pending Security Deposit Refunds';
+      const pendingRefunds = bookings.filter(b => b.paymentVerified && !b.depositReturned && !isBookingCancelled(b) && refundTaskIsReady(b));
+      
+      if (!pendingRefunds.length) {
+        contentEl.innerHTML = '<div class="empty">No pending deposit refund tasks ready right now.</div>';
+      } else {
+        contentEl.innerHTML = pendingRefunds.map(b => `
+          <div class="deposit-task ready">
+            <strong>${escapeHTML(b.customer)}</strong> (${escapeHTML(b.camName)})<br>
+            System Ref: <span class="ref-highlight">${escapeHTML(b.reference || 'N/A')}</span> | Client Payment Ref: <span class="ref-highlight">${escapeHTML(b.paymentRefNumber || 'N/A')}</span><br>
+            Rental Ended: ${formatDate(b.end)}<br>
+            Full Security Deposit to Refund: <strong>₱${money(b.deposit)}</strong>
+            <button class="btn-small" style="margin-top:8px;" onclick="completeDepositRefund(${JSON.stringify(b.id)})">Mark Refund Completed</button>
+          </div>
+        `).join('');
+      }
+    }
+  }
+
+  /* ============================================================
      REFUNDS & SALES
      ============================================================ */
   function refundTaskIsReady(b) {
@@ -1369,7 +1489,7 @@
 
   function completeDepositRefund(id) {
     const b = bookings.find(x => String(x.id) === String(id));
-    if (b && confirm(`Mark deposit refund completed for ${b.customer}?`)) {
+    if (b && confirm(`Mark full security deposit refund (₱${money(b.deposit)}) as completed for ${b.customer}?`)) {
       b.depositReturned = true;
       b.depositRefundCompletedAt = new Date().toISOString();
       sync();
@@ -1383,17 +1503,19 @@
     const active = bookings.filter(b => refundTaskIsReady(b));
     const completed = bookings.filter(b => b.depositReturned);
 
-    activeBox.innerHTML = !active.length ? '<div class="empty">No tasks ready.</div>' : active.map(b => `
+    activeBox.innerHTML = !active.length ? '<div class="empty">No refund tasks currently ready.</div>' : active.map(b => `
       <div class="deposit-task ready">
         <strong>${escapeHTML(b.customer)}</strong> (${escapeHTML(b.camName)})<br>
-        Ends: ${formatDate(b.end)}
+        System Ref: <span class="ref-highlight">${escapeHTML(b.reference || 'N/A')}</span> | Client Ref: <span class="ref-highlight">${escapeHTML(b.paymentRefNumber || 'N/A')}</span><br>
+        Rental Ended: ${formatDate(b.end)}<br>
+        Full Security Deposit Refund Amount: <strong>₱${money(b.deposit)}</strong>
         <button class="btn-small" style="margin-top:8px;" onclick="completeDepositRefund(${JSON.stringify(b.id)})">Mark Refunded</button>
       </div>
     `).join('');
 
     completedBox.innerHTML = !completed.length ? '<div class="empty">No completed refunds yet.</div>' : completed.map(b => `
       <div class="deposit-task deposit-completed">
-        ✓ <strong>${escapeHTML(b.customer)}</strong> - Refunded on ${formatDate(b.depositRefundCompletedAt)}
+        ✓ <strong>${escapeHTML(b.customer)}</strong> — Full Deposit (₱${money(b.deposit)}) Refunded on ${formatDate(b.depositRefundCompletedAt)}
       </div>
     `).join('');
   }
@@ -1414,29 +1536,59 @@
 
   function renderAvailability() {
     const box = document.getElementById('availabilityList');
-    if (!inventory.length) { box.innerHTML = '<div class="empty">No units available.</div>'; return; }
+    if (!inventory.length) { box.innerHTML = '<div class="empty">No camera units configured.</div>'; return; }
 
-    box.innerHTML = inventory.map(unit => {
-      const upcoming = bookings.filter(b => b.camName === unit.name && !isBookingCancelled(b));
-      return `
-        <div class="availability-box">
-          <strong>${escapeHTML(unit.name)}</strong><br>
-          ${upcoming.length ? upcoming.map(b => `<span class="availability-date">${formatDate(b.start)} → ${formatDate(b.end)}</span>`).join('') : '<span class="text-success">Available</span>'}
-        </div>
-      `;
-    }).join('');
+    const activeBookings = bookings.filter(b => !isBookingCancelled(b)).sort((a,b) => new Date(a.start) - new Date(b.start));
+
+    if (!activeBookings.length) {
+      box.innerHTML = '<div class="empty">No scheduled rentals across all camera units.</div>';
+      return;
+    }
+
+    box.innerHTML = `
+      <table class="schedule-table">
+        <thead>
+          <tr>
+            <th>Camera Unit</th>
+            <th>Status</th>
+            <th>Start Date & Time</th>
+            <th>End Date & Time</th>
+            <th>Customer</th>
+            <th>Buffer</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${activeBookings.map(b => {
+            const unit = getUnitByName(b.camName);
+            const bufferMins = unit ? unit.buffer : 60;
+            return `
+              <tr>
+                <td><strong>${escapeHTML(b.camName)}</strong></td>
+                <td><span class="status-badge ${b.paymentVerified ? 'status-confirmed' : 'status-pending'}">${escapeHTML(b.status)}</span></td>
+                <td>${formatDate(b.start)}</td>
+                <td>${formatDate(b.end)}</td>
+                <td>${escapeHTML(b.customer)}</td>
+                <td>${bufferMins} mins</td>
+              </tr>
+            `;
+          }).join('')}
+        </tbody>
+      </table>
+    `;
   }
 
   function renderStats() {
+    const now = new Date();
     document.getElementById('statUnits').innerText = inventory.length;
-    document.getElementById('statBookings').innerText = bookings.filter(b => b.paymentVerified && !isBookingCancelled(b)).length;
-    document.getElementById('statRevenue').innerText = money(bookings.filter(b => b.paymentVerified).reduce((s,b) => s + Number(b.price || 0), 0));
+    document.getElementById('statBookings').innerText = bookings.filter(b => b.paymentVerified && !isBookingCancelled(b) && new Date(b.start) <= now && new Date(b.end) >= now).length;
+    document.getElementById('statRevenue').innerText = money(bookings.filter(b => b.paymentVerified && !isBookingCancelled(b)).reduce((s,b) => s + Number(b.price || 0), 0));
     document.getElementById('statRefunds').innerText = bookings.filter(b => refundTaskIsReady(b)).length;
   }
 
   function render() {
     renderInventory();
     renderBookings();
+    renderOverviewDynamicPanel();
     renderDepositTasks();
     renderSales();
     renderAvailability();
