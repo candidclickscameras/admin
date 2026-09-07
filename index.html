@@ -18,7 +18,7 @@
       --navy: #16233f; 
       --ink: #172033; 
       --muted: #64748b; 
-      --bg: #f4f6fb;
+      --bg: #eef3fb;
       --card: #ffffff; 
       --card-soft: #f8faff; 
       --border: #dce4f1;
@@ -57,6 +57,61 @@
     button { border: 0; cursor: pointer; }
 
     .container { max-width: 1400px; margin: auto; }
+
+    /* AUTHENTICATION OVERLAY / SCREEN */
+    #authOverlay {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, var(--brand-dark), var(--navy));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 9999;
+    }
+
+    .auth-card {
+      background: #ffffff;
+      width: min(420px, 100%);
+      padding: 32px 28px;
+      border-radius: 24px;
+      box-shadow: var(--shadow-lg);
+      text-align: center;
+    }
+
+    .auth-card img {
+      max-width: 180px;
+      max-height: 90px;
+      object-fit: contain;
+      margin-bottom: 12px;
+    }
+
+    .auth-card h2 {
+      font-family: var(--font-title) !important;
+      font-size: 1.3rem;
+      margin: 0 0 6px;
+      padding-bottom: 0;
+      border: 0;
+      color: var(--navy);
+    }
+    .auth-card h2::after { display: none; }
+
+    .auth-card p {
+      font-size: .84rem;
+      color: var(--muted);
+      margin: 0 0 20px;
+    }
+
+    .auth-error {
+      background: var(--red-soft);
+      color: var(--red);
+      font-size: .8rem;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 12px;
+      display: none;
+      font-weight: 600;
+    }
 
     /* BRAND HEADER */
     .page-header {
@@ -101,6 +156,20 @@
       color: rgba(255,255,255,.88);
       margin: 0;
       font-size: .9rem;
+    }
+
+    .logout-btn {
+      background: rgba(255, 255, 255, 0.18);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-size: .82rem;
+      font-weight: 600;
+      transition: background .2s ease;
+    }
+    .logout-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
     }
 
     /* TOP MENU NAVIGATION */
@@ -474,6 +543,26 @@
 
 <body>
 
+<!-- ADMIN LOGIN OVERLAY -->
+<div id="authOverlay">
+  <div class="auth-card">
+    <img 
+      src="https://lh3.googleusercontent.com/d/1mNZ1_hMR8CmMYdNyeeh4ifvjeuQKK8xM" 
+      alt="Candid Clicks Logo"
+      onerror="this.src='candid clicks logo.png'; this.onerror=function(){this.src='candid-clicks-logo.png'};"
+    >
+    <h2>Admin Login</h2>
+    <p>Enter the admin passcode to access the rental dashboard.</p>
+
+    <form id="authForm">
+      <label for="adminPasscode" style="text-align: left;">Passcode</label>
+      <input type="password" id="adminPasscode" placeholder="••••••••" required>
+      <button type="submit" class="btn" style="width: 100%;">Login to Dashboard</button>
+      <div id="authError" class="auth-error">Incorrect passcode. Please try again.</div>
+    </form>
+  </div>
+</div>
+
 <div class="container">
 
   <!-- BRAND HEADER -->
@@ -489,6 +578,7 @@
       <h1>Rental Dashboard</h1>
       <p>Manage inventory, verify bookings, track revenue, and process security deposits.</p>
     </div>
+    <button class="logout-btn" onclick="logoutAdmin()">Lock / Logout</button>
   </div>
 
   <!-- NAVIGATION MENU TABS -->
@@ -753,6 +843,48 @@
 </div>
 
 <script>
+  /* ============================================================
+     ADMIN PASSCODE CONFIGURATION
+     Default Passcodes: admin123 or candid2026
+     ============================================================ */
+  const VALID_PASSCODES = ["admin123", "candid2026"];
+
+  /* ============================================================
+     AUTHENTICATION LOGIC
+     ============================================================ */
+  function checkAuth() {
+    const isAuthenticated = sessionStorage.getItem('admin_authenticated');
+    const overlay = document.getElementById('authOverlay');
+    if (isAuthenticated === 'true') {
+      overlay.style.display = 'none';
+    } else {
+      overlay.style.display = 'flex';
+    }
+  }
+
+  document.getElementById('authForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const inputPasscode = document.getElementById('adminPasscode').value.trim();
+    const errorBox = document.getElementById('authError');
+
+    if (VALID_PASSCODES.includes(inputPasscode)) {
+      sessionStorage.setItem('admin_authenticated', 'true');
+      document.getElementById('authOverlay').style.display = 'none';
+      errorBox.style.display = 'none';
+      document.getElementById('adminPasscode').value = '';
+    } else {
+      errorBox.style.display = 'block';
+    }
+  });
+
+  function logoutAdmin() {
+    sessionStorage.removeItem('admin_authenticated');
+    checkAuth();
+  }
+
+  /* Run auth check immediately */
+  checkAuth();
+
   let inventory = JSON.parse(localStorage.getItem('gear_inv')) || [];
   let bookings = JSON.parse(localStorage.getItem('gear_bookings')) || [];
   let currentSalesPeriod = 'daily';
